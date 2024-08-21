@@ -1,0 +1,6 @@
+[submodule "FurniSphere-frontend"]
+	path = FurniSphere-frontend
+	url = https://github.com/mohammad-osseily/FurniSphere-frontend.git
+[submodule "FurniSphere-backend"]
+	path = FurniSphere-backend
+	url = https://github.com/mohammad-osseily/FurniSphere-backend
