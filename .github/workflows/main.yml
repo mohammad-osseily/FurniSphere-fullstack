@@ -1,0 +1,31 @@
+name: Update Submodules on Dispatch
+
+on:
+  repository_dispatch:
+    types: [update-submodules-event]
+
+jobs:
+  update-submodules:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout the main repository
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0  # Ensures all history is fetched including tags
+
+    - name: Update submodules
+      run: |
+        git submodule sync --recursive
+        git submodule update --init --recursive --remote --merge
+        git submodule status
+
+    - name: Commit and Push changes
+      run: |
+        git config --global user.name "github-actions"
+        git config --global user.email "github-actions@github.com"
+        git add .
+        git status
+        git commit -m "Automatically updated submodules" || echo "No changes to commit"
+        git remote set-url origin https://${{ secrets.GITMANAGE_PAT }}@github.com/mohammad-osseily/FurniSphere-fullstack
+        git push || echo "Failed to push"
