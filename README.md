@@ -5,9 +5,7 @@
 <!-- project philosophy -->
 <img src="./readme/title2.svg"/>
 
-> A web app for browsing and purchasing furniture, providing an immersive 360-degree view of the products to enhance the shopping experience.
->
-> Furniture Store aims to provide a seamless and engaging platform for customers to explore and purchase furniture. By integrating a 360-degree view feature, customers can get a comprehensive look at the products, ensuring they make informed buying decisions.
+> FurniSphere offers an immersive 360-degree view of furniture, allowing users to explore products in stunning detail. AI technology enables dynamic rearrangement of 3D models, while machine learning recommends products based on user preferences. It's not just shopping—it's a personalized, interactive experience.
 
 ### User Stories
 
@@ -18,28 +16,26 @@
 <!-- Tech stack -->
 <img src="./readme/title3.svg"/>
 
-###  Coffee Express is built using the following technologies:
+###  FurniSphere is built using the following technologies:
 
-- This project uses the [Flutter app development framework](https://flutter.dev/). Flutter is a cross-platform hybrid app development platform which allows us to use a single codebase for apps on mobile, desktop, and the web.
-- For persistent storage (database), the app uses the [Hive](https://hivedb.dev/) package which allows the app to create a custom storage schema and save it to a local database.
-- To send local push notifications, the app uses the [flutter_local_notifications](https://pub.dev/packages/flutter_local_notifications) package which supports Android, iOS, and macOS.
-  - 🚨 Currently, notifications aren't working on macOS. This is a known issue that we are working to resolve!
-- The app uses the font ["Work Sans"](https://fonts.google.com/specimen/Work+Sans) as its main font, and the design of the app adheres to the material design guidelines.
+- Next.js & Three.js: The frontend is developed using Next.js and Three.js to create an interactive and dynamic 3D space tour, enabling users to explore the environment with enhanced performance and server-side rendering capabilities.
+- Laravel & MySQL: The backend utilizes Laravel for server-side logic and application structure, with MySQL as the database to manage data efficiently. This setup supports robust operations and seamless integration with the frontend.
+
 
 <br><br>
 <!-- UI UX -->
 <img src="./readme/title4.svg"/>
 
 
-> We designed Coffee Express using wireframes and mockups, iterating on the design until we reached the ideal layout for easy navigation and a seamless user experience.
+> We designed FurniSphere  using wireframes and mockups, iterating on the design until we reached the ideal layout for easy navigation and a seamless user experience.
 
-- Project Figma design [figma](https://www.figma.com/file/LsuOx5Wnh5YTGSEtrgvz4l/Purrfect-Pals?type=design&node-id=257%3A79&mode=design&t=adzbABt5hbb91ucZ-1)
+- Project Figma design [figma](https://www.figma.com/design/zwUhOLaPRnJbtnQzqAMyBs/FurniSpher?node-id=0-1&node-type=canvas&t=cP2lOQMxKSyh8nuS-0)
 
 
 ### Mockups
-| Home screen  | Menu Screen | Order Screen |
+| Order History  | Register Page | Products Page |
 | ---| ---| ---|
-| ![Landing](./readme/demo/1440x1024.png) | ![fsdaf](./readme/demo/1440x1024.png) | ![fsdaf](./readme/demo/1440x1024.png) |
+| ![Landing](./readme/demo/Order%20History.png) | ![fsdaf](./readme/demo/Register.png) | ![fsdaf](./readme/demo/Products.png) |
 
 <br><br>
 
@@ -57,20 +53,18 @@
 <!-- Implementation -->
 <img src="./readme/title6.svg"/>
 
+### User Screens (Web)
+| 3D screen  | Cart Page |  
+| ---| ---| 
+| ![Landing](./readme/demo/ThreeD.png) | ![fsdaf](./readme/demo/Cart.png) | 
 
-### User Screens (Mobile)
-| Login screen  | Register screen | Landing screen | Loading screen |
-| ---| ---| ---| ---|
-| ![Landing](https://placehold.co/900x1600) | ![fsdaf](https://placehold.co/900x1600) | ![fsdaf](https://placehold.co/900x1600) | ![fsdaf](https://placehold.co/900x1600) |
-| Home screen  | Menu Screen | Order Screen | Checkout Screen |
-| ![Landing](https://placehold.co/900x1600) | ![fsdaf](https://placehold.co/900x1600) | ![fsdaf](https://placehold.co/900x1600) | ![fsdaf](https://placehold.co/900x1600) |
+
 
 ### Admin Screens (Web)
-| Login screen  | Register screen |  Landing screen |
-| ---| ---| ---|
-| ![Landing](./readme/demo/1440x1024.png) | ![fsdaf](./readme/demo/1440x1024.png) | ![fsdaf](./readme/demo/1440x1024.png) |
-| Home screen  | Menu Screen | Order Screen |
-| ![Landing](./readme/demo/1440x1024.png) | ![fsdaf](./readme/demo/1440x1024.png) | ![fsdaf](./readme/demo/1440x1024.png) |
+| Order Mangment  | Add Products |  
+| ---| ---| 
+| ![Landing](./readme/demo/OrderMangment.png) | ![fsdaf](./readme/demo/AddProduct.png) | 
+
 
 <br><br>
 
@@ -78,9 +72,9 @@
 <!-- Prompt Engineering -->
 <img src="./readme/title7.svg"/>
 
-###  Mastering AI Interaction: Unveiling the Power of Prompt Engineering:
+###  Enhancing 3D Shopping Experience with AI and Machine Learning:
 
-- This project uses advanced prompt engineering techniques to optimize the interaction with natural language processing models. By skillfully crafting input instructions, we tailor the behavior of the models to achieve precise and efficient language understanding and generation for various tasks and preferences.
+- This project leverages 3D technology to showcase products interactively, allowing users to view and manipulate the product positions in a virtual environment. AI is integrated to enable dynamic changes in the 3D product placement, while machine learning algorithms analyze user behavior on the site to recommend products based on their interests, creating a personalized shopping experience.
 
 <br><br>
 
@@ -106,7 +100,7 @@
 <!-- How to run -->
 <img src="./readme/title10.svg"/>
 
-> To set up Coffee Express locally, follow these steps:
+> To set up FurniSphere locally, follow these steps:
 
 ### Prerequisites
 
