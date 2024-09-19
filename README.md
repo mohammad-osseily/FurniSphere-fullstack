@@ -56,7 +56,7 @@
 ### User Screens (Web)
 | 3D screen  | Cart Page |  
 | ---| ---| 
-| ![Landing](./readme/demo/ThreeD.png) | ![fsdaf](./readme/demo/Cart.png) | 
+| ![Landing](./readme/demo/ThreeD1.png) | ![fsdaf](./readme/demo/Cart.png) | 
 
 
 
