@@ -54,9 +54,9 @@
 <img src="./readme/title6.svg"/>
 
 ### User Screens (Web)
-| 3D screen  | Cart Page |  
+| Home Page  | 3D screen |  
 | ---| ---| 
-| ![Landing](./readme/demo/ThreeD1.png) | ![fsdaf](./readme/demo/Cart.png) | 
+| ![Landing](./readme/demo/homepage.gif) | ![fsdaf](./readme/demo/ThreeD1.png) | 
 
 
 
@@ -85,6 +85,8 @@
 
 - This project leverages AWS deployment strategies to seamlessly integrate and deploy natural language processing models. With a focus on scalability, reliability, and performance, we ensure that AI applications powered by these models deliver robust and responsive solutions for diverse use cases.
 
+<img src="./readme/demo/aws.png"/>
+
 <br><br>
 
 <!-- Unit Testing -->
@@ -93,6 +95,8 @@
 ###  Precision in Development: Harnessing the Power of Unit Testing:
 
 - This project employs rigorous unit testing methodologies to ensure the reliability and accuracy of code components. By systematically evaluating individual units of the software, we guarantee a robust foundation, identifying and addressing potential issues early in the development process.
+
+<img src="./readme/demo/ubittest.png"/>
 
 <br><br>
 
@@ -109,21 +113,36 @@ This is an example of how to list things you need to use the software and how to
   ```sh
   npm install npm@latest -g
   ```
+* php
+  ```sh
+  apt install php
+  ```
+* composer
+  ```sh
+   php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+   php -r "if (hash_file('sha384', 'composer-setup.php') === 'dac665fdc30fdd8ec78b38b9800061b4150413ff2e3b6f88543c636f7cd84f6db9189d43a81e5503cda447da73c7e5b6') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
+   php composer-setup.php
+   php -r "unlink('composer-setup.php');"
+  ```
 
 ### Installation
 
 _Below is an example of how you can instruct your audience on installing and setting up your app. This template doesn't rely on any external dependencies or services._
 
-1. Get a free API Key at [example](https://example.com)
-2. Clone the repo
-   git clone [github](https://github.com/your_username_/Project-Name.git)
-3. Install NPM packages
-   ```sh
-   npm install
-   ```
-4. Enter your API in `config.js`
+1. git clone https://github.com/mohammad-osseily/FurniSphere-backend
+2. cd FurniSphere-backend
+3. cp .env.example .env
+4. composer update
+5. Enter your API in `.env`
    ```js
    const API_KEY = 'ENTER YOUR API';
+   const JWT_SECRET = '';
+   const JWT_ALGO = '';
    ```
+6. php artisan serve
+7. git clone https://github.com/mohammad-osseily/FurniSphere-frontend
+8. cd FurniSphere-frontend
+9. npm i
+10. npm run dev
 
-Now, you should be able to run Coffee Express locally and explore its features.
+Now, you should be able to run FurniSphere locally and explore its features.
