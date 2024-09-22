@@ -12,6 +12,13 @@
 - As a user, I want to browse the furniture collection, so I can find pieces that suit my taste and needs.
 - As a user, I want to view the furniture in 360 degrees, so I can see the product from all angles and better understand its design and quality.
 - As a user, I want to be able to edit in the space of the room.
+
+### Admin Stories
+
+- As an admin, I want to update the order status, so I can keep customers informed about the progress of their orders.
+- As an admin, I want to update user profiles, so I can manage customer information and provide better service.
+- As an admin, I want to edit the 3D model positions, so I can ensure the furniture items are displayed accurately in the virtual space.
+- As an admin, I want to add new products to the furniture collection, so the catalog remains up to date with the latest offerings.
 <br><br>
 <!-- Tech stack -->
 <img src="./readme/title3.svg"/>
@@ -44,8 +51,7 @@
 
 ###  Architecting Data Excellence: Innovative Database Design Strategies:
 
-- Insert ER Diagram here
-
+<img src="./readme/demo//database.png"/>
 
 <br><br>
 
@@ -53,14 +59,14 @@
 <!-- Implementation -->
 <img src="./readme/title6.svg"/>
 
-### User Screens (Web)
+### User Screens
 | Home Page  | 3D screen |  
 | ---| ---| 
 | ![Landing](./readme/demo/homepage.gif) | ![fsdaf](./readme/demo/ThreeD1.png) | 
 
 
 
-### Admin Screens (Web)
+### Admin Screens
 | Order Mangment  | Add Products |  
 | ---| ---| 
 | ![Landing](./readme/demo/OrderMangment.png) | ![fsdaf](./readme/demo/AddProduct.png) | 
@@ -75,6 +81,8 @@
 ###  Enhancing 3D Shopping Experience with AI and Machine Learning:
 
 - This project leverages 3D technology to showcase products interactively, allowing users to view and manipulate the product positions in a virtual environment. AI is integrated to enable dynamic changes in the 3D product placement, while machine learning algorithms analyze user behavior on the site to recommend products based on their interests, creating a personalized shopping experience.
+
+<img src="./readme/demo/prompt.png"/>
 
 <br><br>
 
