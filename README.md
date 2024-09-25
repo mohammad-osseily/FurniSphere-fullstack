@@ -34,15 +34,16 @@
 <img src="./readme/title4.svg"/>
 
 
-> We designed FurniSphere using wireframes and mockups, iterating on the design until we reached the ideal layout for easy navigation and a seamless user experience.
+> We designed FurniSphere  using wireframes and mockups, iterating on the design until we reached the ideal layout for easy navigation and a seamless user experience.
 
 - Project Figma design [figma](https://www.figma.com/design/zwUhOLaPRnJbtnQzqAMyBs/FurniSpher?node-id=0-1&node-type=canvas&t=cP2lOQMxKSyh8nuS-0)
 
 
+
 ### Mockups
-| Order History  | Register Page | Products Page |
-| ---| ---| ---|
-| ![Landing](./readme/demo/Order.jpeg) | ![fsdaf](./readme/demo/Register.png) | ![fsdaf](./readme/demo/Products.png) |
+| Order History  | Products Page |
+| ---|  ---|
+| ![Landing](./readme/demo/Order.jpeg) |  ![fsdaf](./readme/demo/Products.png) |
 
 <br><br>
 
@@ -104,7 +105,7 @@
 
 - This project employs rigorous unit testing methodologies to ensure the reliability and accuracy of code components. By systematically evaluating individual units of the software, we guarantee a robust foundation, identifying and addressing potential issues early in the development process.
 
-<img src="./readme/demo/ubittest.png"/>
+<img src="./readme/demo/unitTest.png"/>
 
 <br><br>
 
