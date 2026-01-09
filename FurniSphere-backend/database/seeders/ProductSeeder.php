@@ -64,17 +64,7 @@ class ProductSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
-            [
-                'name' => '3D Hexagonal Shelf',
-                'description' => 'A modern wall shelf designed with a 3D hexagonal pattern.',
-                'price' => 89.99,
-                'stock' => 10,
-                'category_id' => $featured3DCategory->id,
-                'image' => '3dObject5`',
-                'color' => 'Gray',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
+
         ]);
 
         // Chair Category

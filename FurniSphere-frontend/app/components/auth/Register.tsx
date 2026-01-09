@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import React from "react";
-import { useForm } from "react-hook-form";
-import { useRouter } from "next/navigation";
-import { registerUser } from "../../services/authServices";
-import Swal from "sweetalert2";
-import "sweetalert2/dist/sweetalert2.min.css";
-import Link from "next/link";
-import { User, Mail, Lock, UserPlus } from "lucide-react";
+import React from 'react';
+import { useForm } from 'react-hook-form';
+import { useRouter } from 'next/navigation';
+import { registerUser } from '../../services/authServices';
+import Swal from 'sweetalert2';
+import 'sweetalert2/dist/sweetalert2.min.css';
+import Link from 'next/link';
+import { User, Mail, Lock, UserPlus } from 'lucide-react';
 
 interface RegisterFormInputs {
   name: string;
@@ -25,26 +25,31 @@ const Register: React.FC = () => {
     watch,
   } = useForm<RegisterFormInputs>();
 
-  const password = watch("password");
+  const password = watch('password');
 
   const onSubmit = async (data: RegisterFormInputs) => {
     try {
-      await registerUser(data.name, data.email, data.password);
+      await registerUser(
+        data.name,
+        data.email,
+        data.password,
+        data.password_confirmation
+      );
 
       Swal.fire({
-        title: "Success!",
-        text: "You have registered successfully!",
-        icon: "success",
-        confirmButtonText: "OK",
+        title: 'Success!',
+        text: 'You have registered successfully!',
+        icon: 'success',
+        confirmButtonText: 'OK',
       }).then(() => {
-        router.push("/");
+        router.push('/');
       });
     } catch (err) {
       Swal.fire({
-        title: "Error!",
-        text: "Registration failed. Please try again.",
-        icon: "error",
-        confirmButtonText: "OK",
+        title: 'Error!',
+        text: 'Registration failed. Please try again.',
+        icon: 'error',
+        confirmButtonText: 'OK',
       });
     }
   };
@@ -72,7 +77,7 @@ const Register: React.FC = () => {
                 id="name"
                 type="text"
                 placeholder="Enter your name"
-                {...register("name", { required: "Name is required" })}
+                {...register('name', { required: 'Name is required' })}
                 className="w-full h-12 pl-10 pr-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
               />
               <User
@@ -97,7 +102,7 @@ const Register: React.FC = () => {
                 id="email"
                 type="email"
                 placeholder="Enter your email"
-                {...register("email", { required: "Email is required" })}
+                {...register('email', { required: 'Email is required' })}
                 className="w-full h-12 pl-10 pr-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
               />
               <Mail
@@ -124,11 +129,11 @@ const Register: React.FC = () => {
                 id="password"
                 type="password"
                 placeholder="Enter your password"
-                {...register("password", {
-                  required: "Password is required",
+                {...register('password', {
+                  required: 'Password is required',
                   minLength: {
                     value: 8,
-                    message: "Password must be at least 8 characters long",
+                    message: 'Password must be at least 8 characters long',
                   },
                 })}
                 className="w-full h-12 pl-10 pr-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
@@ -157,10 +162,10 @@ const Register: React.FC = () => {
                 id="password_confirmation"
                 type="password"
                 placeholder="Confirm your password"
-                {...register("password_confirmation", {
-                  required: "Please confirm your password",
+                {...register('password_confirmation', {
+                  required: 'Please confirm your password',
                   validate: (value) =>
-                    value === password || "The passwords do not match",
+                    value === password || 'The passwords do not match',
                 })}
                 className="w-full h-12 pl-10 pr-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
               />
@@ -189,7 +194,7 @@ const Register: React.FC = () => {
 
         <div className="text-center">
           <p className="text-gray-600">
-            Already have an account?{" "}
+            Already have an account?{' '}
             <Link
               href="/login"
               className="text-primary hover:underline font-medium"
