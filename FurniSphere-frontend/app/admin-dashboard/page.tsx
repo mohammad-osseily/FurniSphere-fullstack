@@ -11,7 +11,7 @@ const AdminDashboard: React.FC = () => {
       <AdminSidebar />
 
       {/* Main content */}
-      <div className="flex-1 p-4 bg-gray-100">
+      <div className="flex-1 p-4 sm:p-6 md:p-8 bg-base-100">
         
         {/* Render the User Management component */}
         <UserMangment />

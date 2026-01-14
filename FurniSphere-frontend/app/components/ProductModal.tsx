@@ -131,16 +131,16 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, isOpen, onClose })
           >
             <X className="w-5 h-5 text-neutral" />
           </button>
-
+          
           {/* Image Section */}
           <div className="w-full lg:w-1/2 p-6 flex items-center justify-center bg-base-100 relative">
             {!imageLoaded && !imageError && (
               <div className="absolute inset-0 bg-base-300 animate-pulse rounded-lg" />
             )}
             <div className="relative w-full aspect-square max-h-[500px]">
-              <img
+            <img
                 src={imageUrl}
-                alt={product.name}
+              alt={product.name}
                 className={`w-full h-full object-cover rounded-lg transition-opacity duration-300 ${
                   imageLoaded ? 'opacity-100' : 'opacity-0'
                 }`}
@@ -187,7 +187,7 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, isOpen, onClose })
               )}
             </div>
           </div>
-
+          
           {/* Content Section */}
           <div className="w-full lg:w-1/2 p-6 lg:p-8 flex flex-col justify-between overflow-y-auto">
             <div>
@@ -198,7 +198,7 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, isOpen, onClose })
               <h2 className="text-3xl lg:text-4xl font-bold text-neutral mb-4">
                 {product.name}
               </h2>
-
+              
               {/* Price */}
               <p className="text-3xl font-bold text-primary mb-6">
                 ${formatPrice(product.price)}
@@ -236,8 +236,8 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, isOpen, onClose })
 
             {/* Add to Cart Button */}
             <div className="mt-6">
-              <button
-                onClick={handleAddToCart}
+            <button
+              onClick={handleAddToCart}
                 disabled={product.stock !== undefined && product.stock !== null && product.stock === 0}
                 className="w-full flex items-center justify-center gap-2 px-6 py-4 bg-primary text-base-200 rounded-xl font-medium hover:bg-primary/90 active:bg-primary/80 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary disabled:opacity-50 disabled:cursor-not-allowed"
               >
@@ -247,7 +247,7 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, isOpen, onClose })
                     ? 'Out of Stock'
                     : 'Add to Cart'}
                 </span>
-              </button>
+            </button>
             </div>
           </div>
         </div>

@@ -104,25 +104,25 @@ const UserManagement: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-screen bg-gray-100">
-        <div className="animate-spin rounded-full h-32 w-32 border-t-4 border-b-4 border-blue-500"></div>
+      <div className="flex justify-center items-center h-screen bg-base-100">
+        <div className="animate-spin rounded-full h-32 w-32 border-t-4 border-b-4 border-primary"></div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen p-8  bg-gray-100">
+    <div className="min-h-screen p-8 bg-base-100">
       <ToastContainer />
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-4xl font-bold text-left mb-10 text-gray-800">
+        <h1 className="text-4xl font-bold text-left mb-10 text-neutral">
           User Management
         </h1>
-        <div className="bg-white shadow-xl rounded-lg overflow-hidden">
-          <div className="p-6 border-b border-gray-200">
+        <div className="bg-base-200 shadow-xl rounded-lg overflow-hidden">
+          <div className="p-6 border-b border-base-300">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center">
-                <Users className="h-6 w-6 text-gray-500 mr-2" />
-                <span className="text-xl font-semibold text-gray-700">
+                <Users className="h-6 w-6 text-neutral mr-2" />
+                <span className="text-xl font-semibold text-neutral">
                   Users
                 </span>
               </div>
@@ -130,57 +130,57 @@ const UserManagement: React.FC = () => {
                 <input
                   type="text"
                   placeholder="Search users..."
-                  className="pl-10 pr-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="pl-10 pr-4 py-2 border border-base-300 rounded-full focus:outline-none focus:ring-2 focus:ring-primary bg-base-200 text-neutral"
                   value={searchTerm}
                   onChange={handleSearch}
                 />
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-neutral" />
               </div>
             </div>
             <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-50">
+              <table className="min-w-full divide-y divide-base-300">
+                <thead className="bg-base-300">
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-neutral uppercase tracking-wider">
                       Name
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-neutral uppercase tracking-wider">
                       Email
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-neutral uppercase tracking-wider">
                       Role
                     </th>
-                    <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-center text-xs font-medium text-neutral uppercase tracking-wider">
                       Actions
                     </th>
                   </tr>
                 </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
+                <tbody className="bg-base-200 divide-y divide-base-300">
                   {currentUsers.map((user) => (
                     <tr
                       key={user.id}
-                      className="hover:bg-gray-50 transition-colors duration-200"
+                      className="hover:bg-base-300 transition-colors duration-200"
                     >
-                      <td className="px-6 py-4 whitespace-nowrap">
+                      <td className="px-6 py-4 whitespace-nowrap text-neutral">
                         {user.name}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
+                      <td className="px-6 py-4 whitespace-nowrap text-neutral">
                         {user.email}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap capitalize">
+                      <td className="px-6 py-4 whitespace-nowrap capitalize text-neutral">
                         {user.role}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-center">
                         <button
                           onClick={() => handleEditClick(user)}
-                          className="text-blue-600 hover:text-blue-800 mr-3 transition-colors duration-200"
+                          className="text-primary hover:text-primary/80 mr-3 transition-colors duration-200"
                           aria-label={`Edit ${user.name}`}
                         >
                           <Pencil className="h-5 w-5" />
                         </button>
                         <button
                           onClick={() => handleDeleteClick(user.id)}
-                          className="text-red-600 hover:text-red-800 transition-colors duration-200"
+                          className="text-error hover:text-error/80 transition-colors duration-200"
                           aria-label={`Delete ${user.name}`}
                         >
                           <Trash2 className="h-5 w-5" />
@@ -192,26 +192,26 @@ const UserManagement: React.FC = () => {
               </table>
             </div>
           </div>
-          <div className="bg-gray-50 px-6 py-4 flex items-center justify-between border-t border-gray-200">
+          <div className="bg-base-300 px-6 py-4 flex items-center justify-between border-t border-base-300">
             <div className="flex-1 flex justify-between sm:hidden">
               <button
                 onClick={() => paginate(currentPage - 1)}
                 disabled={currentPage === 1}
-                className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
+                className="relative inline-flex items-center px-4 py-2 border border-base-300 text-sm font-medium rounded-md text-neutral bg-base-200 hover:bg-base-300 disabled:opacity-50"
               >
                 Previous
               </button>
               <button
                 onClick={() => paginate(currentPage + 1)}
                 disabled={indexOfLastUser >= filteredUsers.length}
-                className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
+                className="ml-3 relative inline-flex items-center px-4 py-2 border border-base-300 text-sm font-medium rounded-md text-neutral bg-base-200 hover:bg-base-300 disabled:opacity-50"
               >
                 Next
               </button>
             </div>
             <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
               <div>
-                <p className="text-sm text-gray-700">
+                <p className="text-sm text-neutral">
                   Showing{" "}
                   <span className="font-medium">{indexOfFirstUser + 1}</span> to{" "}
                   <span className="font-medium">
@@ -229,7 +229,7 @@ const UserManagement: React.FC = () => {
                   <button
                     onClick={() => paginate(currentPage - 1)}
                     disabled={currentPage === 1}
-                    className="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
+                    className="relative inline-flex items-center px-2 py-2 rounded-l-md border border-base-300 bg-base-200 text-sm font-medium text-neutral hover:bg-base-300 disabled:opacity-50"
                   >
                     <span className="sr-only">Previous</span>
                     <ChevronLeft className="h-5 w-5" aria-hidden="true" />
@@ -242,8 +242,8 @@ const UserManagement: React.FC = () => {
                       onClick={() => paginate(index + 1)}
                       className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium ${
                         currentPage === index + 1
-                          ? "z-10 bg-blue-50 border-blue-500 text-blue-600"
-                          : "bg-white border-gray-300 text-gray-500 hover:bg-gray-50"
+                          ? "z-10 bg-primary border-primary text-base-200"
+                          : "bg-base-200 border-base-300 text-neutral hover:bg-base-300"
                       }`}
                     >
                       {index + 1}
@@ -252,7 +252,7 @@ const UserManagement: React.FC = () => {
                   <button
                     onClick={() => paginate(currentPage + 1)}
                     disabled={indexOfLastUser >= filteredUsers.length}
-                    className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
+                    className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-base-300 bg-base-200 text-sm font-medium text-neutral hover:bg-base-300 disabled:opacity-50"
                   >
                     <span className="sr-only">Next</span>
                     <ChevronRight className="h-5 w-5" aria-hidden="true" />
@@ -267,13 +267,13 @@ const UserManagement: React.FC = () => {
       {/* Edit User Modal */}
       {editUser && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-white p-8 rounded-lg w-full max-w-md">
-            <h2 className="text-2xl font-bold mb-6 text-gray-800">Edit User</h2>
+          <div className="bg-base-200 p-8 rounded-lg w-full max-w-md">
+            <h2 className="text-2xl font-bold mb-6 text-neutral">Edit User</h2>
             <div className="space-y-4">
               <div>
                 <label
                   htmlFor="name"
-                  className="block text-sm font-medium text-gray-700 mb-1"
+                  className="block text-sm font-medium text-neutral mb-1"
                 >
                   Name
                 </label>
@@ -284,13 +284,13 @@ const UserManagement: React.FC = () => {
                   onChange={(e) =>
                     setEditUser({ ...editUser, name: e.target.value })
                   }
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-3 py-2 border border-base-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary bg-base-200 text-neutral"
                 />
               </div>
               <div>
                 <label
                   htmlFor="email"
-                  className="block text-sm font-medium text-gray-700 mb-1"
+                  className="block text-sm font-medium text-neutral mb-1"
                 >
                   Email
                 </label>
@@ -301,13 +301,13 @@ const UserManagement: React.FC = () => {
                   onChange={(e) =>
                     setEditUser({ ...editUser, email: e.target.value })
                   }
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-3 py-2 border border-base-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary bg-base-200 text-neutral"
                 />
               </div>
               <div>
                 <label
                   htmlFor="role"
-                  className="block text-sm font-medium text-gray-700 mb-1"
+                  className="block text-sm font-medium text-neutral mb-1"
                 >
                   Role
                 </label>
@@ -318,20 +318,20 @@ const UserManagement: React.FC = () => {
                   onChange={(e) =>
                     setEditUser({ ...editUser, role: e.target.value })
                   }
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-3 py-2 border border-base-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary bg-base-200 text-neutral"
                 />
               </div>
             </div>
             <div className="mt-8 flex justify-end space-x-3">
               <button
                 onClick={() => setEditUser(null)}
-                className="px-4 py-2 bg-gray-300 text-gray-800 rounded-md hover:bg-gray-400 transition-colors duration-200"
+                className="px-4 py-2 bg-base-300 text-neutral rounded-md hover:bg-base-300/80 transition-colors duration-200"
               >
                 Cancel
               </button>
               <button
                 onClick={handleEditSave}
-                className="px-4 py-2 bg-primary text-white rounded-md hover:opacity-90 transition-colors duration-200"
+                className="px-4 py-2 bg-primary text-base-200 rounded-md hover:bg-primary/90 transition-colors duration-200"
               >
                 Save Changes
               </button>
@@ -343,24 +343,24 @@ const UserManagement: React.FC = () => {
       {/* Delete Confirmation Modal */}
       {openDeleteDialog && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-white p-8 rounded-lg w-full max-w-sm">
-            <h2 className="text-2xl font-bold mb-4 text-gray-800">
+          <div className="bg-base-200 p-8 rounded-lg w-full max-w-sm">
+            <h2 className="text-2xl font-bold mb-4 text-neutral">
               Confirm Delete
             </h2>
-            <p className="mb-6 text-gray-600">
+            <p className="mb-6 text-neutral">
               Are you sure you want to delete this user? This action cannot be
               undone.
             </p>
             <div className="flex justify-end space-x-3">
               <button
                 onClick={handleCloseDeleteDialog}
-                className="px-4 py-2 bg-gray-300 text-gray-800 rounded-md hover:bg-gray-400 transition-colors duration-200"
+                className="px-4 py-2 bg-base-300 text-neutral rounded-md hover:bg-base-300/80 transition-colors duration-200"
               >
                 Cancel
               </button>
               <button
                 onClick={handleDeleteConfirm}
-                className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors duration-200"
+                className="px-4 py-2 bg-error text-base-200 rounded-md hover:bg-error/90 transition-colors duration-200"
               >
                 Delete
               </button>

@@ -35,8 +35,8 @@ export default function AdminSidebar() {
     <Box
       sx={{
         height: "100vh", // Set height to 100% of viewport height
-        backgroundColor: "oklch(0.3354 0.090487 241.152)",
-        color: "white",
+        backgroundColor: "#8B7355", // Primary theme color
+        color: "#FAFAFA", // Base-100 theme color
         width: drawerWidth,
         flexShrink: 0,
         display: "flex",
@@ -59,38 +59,66 @@ export default function AdminSidebar() {
       <Box sx={{ flexGrow: 1, overflow: "auto", pt: 2 }}>
         <List>
           <Link href="/admin-dashboard" passHref legacyBehavior>
-            <ListItem component="a">
-              <ListItemIcon sx={{ color: "white" }}>
+            <ListItem 
+              component="a"
+              sx={{
+                "&:hover": {
+                  backgroundColor: "rgba(255, 255, 255, 0.1)",
+                },
+              }}
+            >
+              <ListItemIcon sx={{ color: "#FAFAFA" }}>
                 <PeopleIcon />
               </ListItemIcon>
-              <ListItemText primary="User Management" />
+              <ListItemText primary="User Management" sx={{ color: "#FAFAFA" }} />
             </ListItem>
           </Link>
 
           <Link href="/admin-dashboard/add-product" passHref legacyBehavior>
-            <ListItem component="a">
-              <ListItemIcon sx={{ color: "white" }}>
+            <ListItem 
+              component="a"
+              sx={{
+                "&:hover": {
+                  backgroundColor: "rgba(255, 255, 255, 0.1)",
+                },
+              }}
+            >
+              <ListItemIcon sx={{ color: "#FAFAFA" }}>
                 <AddBoxIcon />
               </ListItemIcon>
-              <ListItemText primary="Add Products" />
+              <ListItemText primary="Add Products" sx={{ color: "#FAFAFA" }} />
             </ListItem>
           </Link>
 
           <Link href="/admin-dashboard/orders" passHref legacyBehavior>
-            <ListItem component="a">
-              <ListItemIcon sx={{ color: "white" }}>
+            <ListItem 
+              component="a"
+              sx={{
+                "&:hover": {
+                  backgroundColor: "rgba(255, 255, 255, 0.1)",
+                },
+              }}
+            >
+              <ListItemIcon sx={{ color: "#FAFAFA" }}>
                 <ShoppingCartIcon />
               </ListItemIcon>
-              <ListItemText primary="Order Management" />
+              <ListItemText primary="Order Management" sx={{ color: "#FAFAFA" }} />
             </ListItem>
           </Link>
 
           <Link href="/admin-dashboard/threeD" passHref legacyBehavior>
-            <ListItem component="a">
-              <ListItemIcon sx={{ color: "white" }}>
+            <ListItem 
+              component="a"
+              sx={{
+                "&:hover": {
+                  backgroundColor: "rgba(255, 255, 255, 0.1)",
+                },
+              }}
+            >
+              <ListItemIcon sx={{ color: "#FAFAFA" }}>
                 <ThreeDRotationIcon />
               </ListItemIcon>
-              <ListItemText primary="3D Manipulation" />
+              <ListItemText primary="3D Manipulation" sx={{ color: "#FAFAFA" }} />
             </ListItem>
           </Link>
         </List>
@@ -100,13 +128,13 @@ export default function AdminSidebar() {
       <Box sx={{ p: 2 }}>
         <Button
           variant="contained"
-          color="secondary"
           fullWidth
           startIcon={<LogoutIcon />}
           sx={{
-            backgroundColor: "#FF6347",
+            backgroundColor: "#D9534F", // Error theme color
+            color: "#FAFAFA", // Base-100 theme color
             "&:hover": {
-              backgroundColor: "#ff4c33",
+              backgroundColor: "#C04440",
             },
           }}
           onClick={handleLogout}

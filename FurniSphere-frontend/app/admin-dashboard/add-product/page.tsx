@@ -8,16 +8,16 @@ export default function ProductPage() {
   const [sidebarOpen, setSidebarOpen] = React.useState(false);
 
   return (
-    <div className="flex flex-col md:flex-row min-h-screen bg-gray-100">
+    <div className="flex flex-col md:flex-row min-h-screen bg-base-100">
       {/* Sidebar toggle for mobile */}
       <div className="md:hidden fixed top-4 left-4 z-20">
         <button
           onClick={() => setSidebarOpen(!sidebarOpen)}
-          className="p-2 rounded-full bg-transparent focus:outline-none focus:ring-2 focus:ring-gray-300"
+          className="p-2 rounded-full bg-transparent focus:outline-none focus:ring-2 focus:ring-primary"
         >
           {sidebarOpen ? (
             <svg
-              className="h-6 w-6 text-gray-600"
+              className="h-6 w-6 text-neutral"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -31,7 +31,7 @@ export default function ProductPage() {
             </svg>
           ) : (
             <svg
-              className="h-6 w-6 text-gray-600"
+              className="h-6 w-6 text-neutral"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"

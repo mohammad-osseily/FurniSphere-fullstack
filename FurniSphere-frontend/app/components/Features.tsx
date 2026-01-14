@@ -1,15 +1,18 @@
 export default function Features() {
   return (
-    <section className=" py-8">
-      <div className="container mx-auto flex flex-col md:flex-row justify-between items-start space-y-6 md:space-y-0">
-        <div className="flex items-center space-x-4">
-          <svg
-            width="80"
-            height="45"
-            viewBox="0 0 84 51"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
+    <section className="py-8 sm:py-12 bg-base-100">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col md:flex-row justify-between items-center md:items-start gap-6 md:gap-4 lg:gap-6">
+          <div className="flex items-center justify-center md:justify-start space-x-3 sm:space-x-4 w-full md:w-auto">
+            <div className="flex-shrink-0">
+              <svg
+                width="60"
+                height="35"
+                className="w-12 h-7 sm:w-16 sm:h-9 md:w-20 md:h-11"
+                viewBox="0 0 84 51"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
             <path
               d="M3.038 20.3621H2.22852C0.997617 20.3621 0 21.36 0 22.5906C0 23.8212 0.997617 24.8191 2.22852 24.8191H3.038C4.26828 24.8191 5.26657 23.8212 5.26657 22.5906C5.26657 21.36 4.26859 20.3621 3.038 20.3621Z"
               fill="#111111"
@@ -38,21 +41,23 @@ export default function Features() {
               d="M83.3369 24.5136L72.6408 12.8147C72.219 12.3526 71.6215 12.0895 70.9957 12.0895H58.3498V2.61916C58.3498 1.38825 57.3522 0.390625 56.1212 0.390625H15.5083C14.2774 0.390625 13.2798 1.38857 13.2798 2.61916C13.2798 3.84975 14.2774 4.84769 15.5083 4.84769H53.8924V40.3352H34.6721C33.7094 37.1014 30.7114 34.7362 27.1697 34.7362C23.6279 34.7362 20.6293 37.1014 19.6676 40.3352H15.5083C14.2774 40.3352 13.2798 41.3328 13.2798 42.5634C13.2798 43.7946 14.2774 44.792 15.5083 44.792H19.6676C20.6293 48.0251 23.6279 50.3906 27.1697 50.3906C30.7114 50.3906 33.7094 48.0251 34.6721 44.792H56.1209H61.4037C62.3664 48.0251 65.365 50.3906 68.9061 50.3906C72.4485 50.3906 75.4465 48.0251 76.4088 44.792H81.6919C82.9228 44.792 83.9204 43.7943 83.9204 42.5634V26.0172C83.9211 25.4613 83.7122 24.9245 83.3369 24.5136ZM27.1697 45.9342C25.3114 45.9342 23.7995 44.4223 23.7995 42.5637C23.7995 40.7054 25.3114 39.1933 27.1697 39.1933C29.028 39.1933 30.5398 40.7058 30.5398 42.5637C30.5401 44.4223 29.028 45.9342 27.1697 45.9342ZM68.9064 45.9342C67.0481 45.9342 65.5363 44.4223 65.5363 42.5637C65.5363 40.7054 67.0485 39.1933 68.9064 39.1933C70.7653 39.1933 72.2772 40.7058 72.2772 42.5637C72.2775 44.4223 70.7653 45.9342 68.9064 45.9342ZM76.4094 40.3355C75.4471 37.1017 72.4491 34.7365 68.9067 34.7365C65.3653 34.7365 62.367 37.1017 61.4043 40.3355H58.3501V16.5469H70.0143L76.6354 23.789H64.012C62.7817 23.789 61.7841 24.7869 61.7841 26.0175C61.7841 27.2487 62.7817 28.2461 64.012 28.2461H79.464V40.3352H76.4094V40.3355Z"
               fill="#111111"
             />
-          </svg>
-
-          <div>
-            <h3 className="text-lg font-semibold">Free Delivery</h3>
-            <p className="text-gray-600">Lorem ipsum dolor sit amet.</p>
+              </svg>
+            </div>
+            <div className="flex-1 text-center md:text-left">
+              <h3 className="text-base sm:text-lg font-bold text-neutral mb-1">Free Delivery</h3>
+              <p className="text-sm sm:text-base text-neutral">Free shipping on all orders.</p>
+            </div>
           </div>
-        </div>
-        <div className="flex items-center space-x-4">
-          <svg
-            width="60"
-            height="50"
-            viewBox="0 0 60 50"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
+          <div className="flex items-center justify-center md:justify-start space-x-3 sm:space-x-4 w-full md:w-auto">
+            <div className="flex-shrink-0">
+              <svg
+                width="60"
+                height="50"
+                className="w-12 h-10 sm:w-14 sm:h-12 md:w-16 md:h-14"
+                viewBox="0 0 60 50"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
             <path
               d="M17.2233 32.6246H27.413C28.2923 32.6246 29.005 31.9119 29.005 31.0331C29.005 30.1538 28.2921 29.4406 27.413 29.4406H21.0663L27.0219 23.4854C28.3005 22.2067 29.005 20.5067 29.005 18.6981C29.005 16.8898 28.3005 15.1898 27.0219 13.9111C25.7434 12.6323 24.0432 11.9282 22.2349 11.9282C20.4263 11.9282 18.7263 12.6325 17.4479 13.9111C16.826 14.5325 16.826 15.5408 17.4479 16.1626C18.0697 16.784 19.0775 16.784 19.6994 16.1622C20.3764 15.4849 21.2772 15.1121 22.2349 15.1121C23.1927 15.1121 24.0934 15.4849 24.7706 16.1626C25.4481 16.8394 25.8209 17.74 25.8209 18.6981C25.8209 19.656 25.4481 20.5566 24.7706 21.2339L16.0972 29.9074C15.6418 30.3624 15.5058 31.0474 15.7519 31.6424C15.9987 32.237 16.5792 32.6246 17.2233 32.6246Z"
               fill="#111111"
@@ -85,22 +90,23 @@ export default function Features() {
               d="M39.7174 46.1584C39.2979 46.1584 38.8879 46.3292 38.5918 46.6248C38.2949 46.921 38.1255 47.3317 38.1255 47.7504C38.1255 48.1695 38.2951 48.58 38.5918 48.8762C38.8879 49.173 39.2979 49.3426 39.7174 49.3426C40.1361 49.3426 40.547 49.173 40.8428 48.8762C41.1389 48.58 41.3096 48.1695 41.3096 47.7504C41.3096 47.3317 41.1391 46.921 40.8428 46.6248C40.547 46.3292 40.1359 46.1584 39.7174 46.1584Z"
               fill="#111111"
             />
-          </svg>
-
-          <div>
-            <h3 className="text-lg font-semibold">Support 24/7</h3>
-            <p className="text-gray-600">Lorem ipsum dolor sit amet.</p>
+              </svg>
+            </div>
+            <div className="flex-1 text-center md:text-left">
+              <h3 className="text-base sm:text-lg font-bold text-neutral mb-1">Support 24/7</h3>
+              <p className="text-sm sm:text-base text-neutral">Round-the-clock customer assistance.</p>
+            </div>
           </div>
-        </div>
-        <div className="flex items-center space-x-4">
-          <svg
-            width="60"
-            height="50"
-            className=" flex-shrink-0"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
+          <div className="flex items-center justify-center md:justify-start space-x-3 sm:space-x-4 w-full md:w-auto">
+            <div className="flex-shrink-0">
+              <svg
+                width="60"
+                height="50"
+                className="w-12 h-10 sm:w-14 sm:h-12 md:w-16 md:h-14"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
             <path
               d="M12 2L4 5V11.09C4 16.14 7.41 20.85 12 22C16.59 20.85 20 16.14 20 11.09V5L12 2ZM18 11.09C18 15.09 15.45 18.79 12 19.92C8.55 18.79 6 15.1 6 11.09V6.39L12 4.14L18 6.39V11.09Z"
               fill="currentColor"
@@ -109,10 +115,12 @@ export default function Features() {
               d="M12 7C10.9 7 10 7.9 10 9C10 10.1 10.9 11 12 11C13.1 11 14 10.1 14 9C14 7.9 13.1 7 12 7Z"
               fill="currentColor"
             />
-          </svg>
-          <div>
-            <h3 className="text-lg font-semibold">100% Authentic</h3>
-            <p className="text-gray-600">Lorem ipsum dolor sit amet.</p>
+              </svg>
+            </div>
+            <div className="flex-1 text-center md:text-left">
+              <h3 className="text-base sm:text-lg font-bold text-neutral mb-1">100% Authentic</h3>
+              <p className="text-sm sm:text-base text-neutral">Genuine products with quality guarantee.</p>
+            </div>
           </div>
         </div>
       </div>

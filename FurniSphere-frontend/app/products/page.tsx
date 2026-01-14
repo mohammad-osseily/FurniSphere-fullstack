@@ -34,21 +34,21 @@ const ProductsPage = () => {
 
   const handleAddToCart = useCallback(
     async (product: {
-      id: number;
-      name: string;
-      price: number;
-      image: string;
-    }) => {
-      try {
-        await addToCart(product.id, 1); // Add to cart with quantity 1
-        toast.success(`Product added to cart successfully!`);
+    id: number;
+    name: string;
+    price: number;
+    image: string;
+  }) => {
+    try {
+      await addToCart(product.id, 1); // Add to cart with quantity 1
+      toast.success(`Product added to cart successfully!`);
 
-        // Track 'add_to_cart' interaction
+      // Track 'add_to_cart' interaction
         await trackUserActivity(product.id, 'add_to_cart');
-      } catch (error) {
+    } catch (error) {
         console.error('Failed to add to cart:', error);
         toast.error('Failed to add product to cart.');
-      }
+    }
     },
     []
   );

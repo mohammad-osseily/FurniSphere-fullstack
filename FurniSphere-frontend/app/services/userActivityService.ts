@@ -42,7 +42,7 @@ export const trackUserActivity = async (
     // Only log other errors (network issues, server errors, etc.)
     // Don't throw to prevent breaking the user experience
     if (error?.response?.status !== 401 && error?.response?.status !== 403) {
-      console.error("Error tracking user activity:", error);
+    console.error("Error tracking user activity:", error);
     }
   }
 };

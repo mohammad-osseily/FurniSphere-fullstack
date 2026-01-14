@@ -82,16 +82,21 @@ export const updateCartQuantity = async (
 };
 export const submitOrder = async (orderData: any) => {
   const token = getTokenFromLocalStorage();
-  const response = await axios.post(
-    "http://127.0.0.1:8000/api/orders/create",
-    orderData,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
-  return response.data;
+  try {
+    const response = await axios.post(
+      "http://127.0.0.1:8000/api/orders/create",
+      orderData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response.data;
+  } catch (error: any) {
+    // Re-throw the error so it can be handled in the component
+    throw error;
+  }
 };
 
 export const getOrderHistory = async () => {
