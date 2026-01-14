@@ -4,6 +4,14 @@ import { Product3D } from "@/types";
 
 const API_URL = "http://127.0.0.1:8000/api"; // Adjust to your backend URL
 
+export type Create3DProductPayload = {
+  product_id: number;
+  model_file_path: string;
+  position: { x: number; y: number; z: number };
+  scale: { x: number; y: number; z: number };
+  rotation: { x: number; y: number; z: number };
+};
+
 export const fetchAll3DProducts = async (): Promise<Product3D[]> => {
   try {
     const response = await axios.get(`${API_URL}/product3ds`);
@@ -27,14 +35,14 @@ export const fetch3DProduct = async (id: number): Promise<Product3D> => {
 
 // Create a new 3D product
 export const create3DProduct = async (
-  productData: FormData
+  productData: Create3DProductPayload
 ): Promise<Product3D> => {
   const token = getTokenFromLocalStorage();
   try {
     const response = await axios.post(`${API_URL}/product3ds`, productData, {
       headers: {
         Authorization: `Bearer ${token}`,
-        "Content-Type": "multipart/form-data",
+        "Content-Type": "application/json",
       },
     });
     return response.data;

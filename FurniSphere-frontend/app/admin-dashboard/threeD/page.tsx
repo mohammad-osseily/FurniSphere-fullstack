@@ -29,9 +29,14 @@ function TabPanel(props: TabPanelProps) {
 
 export default function ThreeDPage() {
   const [tabValue, setTabValue] = useState(0);
+  const [refreshKey, setRefreshKey] = useState(0);
 
   const handleTabChange = (newValue: number) => {
     setTabValue(newValue);
+  };
+
+  const handleCreated = () => {
+    setRefreshKey((prev) => prev + 1);
   };
 
   return (
@@ -70,10 +75,10 @@ export default function ThreeDPage() {
             </nav>
           </div>
           <TabPanel value={tabValue} index={0}>
-            <ThreeDManipulation />
+            <ThreeDManipulation refreshKey={refreshKey} />
           </TabPanel>
           <TabPanel value={tabValue} index={1}>
-            <Add3DProduct />
+            <Add3DProduct onCreated={handleCreated} />
           </TabPanel>
         </div>
       </main>

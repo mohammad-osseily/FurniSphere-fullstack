@@ -8,6 +8,7 @@ import { Box, Button, Slider, Typography } from "@mui/material";
 import {
   fetchAll3DProducts,
   update3DProductPosition,
+  delete3DProduct,
 } from "../services/product3dServices";
 import { useRouter } from "next/navigation";
 
@@ -19,7 +20,11 @@ type ModelObject = {
   scale: [number, number, number];
 };
 
-export default function ThreeDManipulation() {
+type ThreeDManipulationProps = {
+  refreshKey?: number;
+};
+
+export default function ThreeDManipulation({ refreshKey = 0 }: ThreeDManipulationProps) {
   const mountRef = useRef<HTMLDivElement>(null);
   const [modelObjects, setModelObjects] = useState<ModelObject[]>([]);
   const [selectedObject, setSelectedObject] = useState<string | null>(null);
@@ -77,6 +82,13 @@ export default function ThreeDManipulation() {
     setControls(newControls);
 
     return { newScene, newCamera, newRenderer, newControls };
+  };
+
+  const clearModels = (targetScene: THREE.Scene) => {
+    modelObjects.forEach(({ model }) => {
+      targetScene.remove(model);
+    });
+    setModelObjects([]);
   };
 
   const loadModels = async (newScene: THREE.Scene) => {
@@ -158,6 +170,35 @@ export default function ThreeDManipulation() {
     };
   }, []);
 
+  useEffect(() => {
+    if (!scene) {
+      return;
+    }
+    clearModels(scene);
+    loadModels(scene);
+  }, [refreshKey, scene]);
+
+  const handleDeleteObject = async (id: number, name: string) => {
+    if (!scene) return;
+    try {
+      await delete3DProduct(id);
+
+      const target = modelObjects.find((obj) => obj.id === id);
+      if (target) {
+        scene.remove(target.model);
+      }
+      const remaining = modelObjects.filter((obj) => obj.id !== id);
+      setModelObjects(remaining);
+      setSelectedObject(null);
+
+      // Hard refresh the models from backend to ensure scene and list are in sync.
+      clearModels(scene);
+      await loadModels(scene);
+    } catch (error) {
+      console.error("Error deleting 3D model:", error);
+    }
+  };
+
   const handleObjectSelect = (name: string) => {
     setSelectedObject(name);
     const object = modelObjects.find((obj) => obj.name === name);
@@ -207,22 +248,40 @@ export default function ThreeDManipulation() {
         <Typography variant="h6" gutterBottom>
           Object Manipulation
         </Typography>
-        <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, mb: 2 }}>
+        <Box sx={{ display: "flex", flexDirection: "column", gap: 1.5, mb: 2 }}>
           {modelObjects.map((obj) => (
-            <Button
-              className={
-                selectedObject === obj.name
-                  ? "bg-primary"
-                  : "text-primary border-primary"
-              }
+            <div
               key={obj.id}
-              variant={selectedObject === obj.name ? "contained" : "outlined"}
-              onClick={() => handleObjectSelect(obj.name)}
-              size="small"
+              className="flex items-center justify-between rounded border border-gray-200 bg-white px-3 py-2"
             >
-              {obj.name}
-            </Button>
+              <button
+                className={`text-sm font-medium ${selectedObject === obj.name ? "text-primary" : "text-gray-800"}`}
+                onClick={() => handleObjectSelect(obj.name)}
+              >
+                {obj.name}
+              </button>
+              <div className="flex items-center gap-2">
+                <button
+                  className="text-xs text-blue-600 underline"
+                  onClick={() => handleObjectSelect(obj.name)}
+                >
+                  Edit
+                </button>
+                <button
+                  className="text-xs text-red-600"
+                  aria-label={`Delete ${obj.name}`}
+                  onClick={() => handleDeleteObject(obj.id, obj.name)}
+                >
+                  ✕
+                </button>
+              </div>
+            </div>
           ))}
+          {modelObjects.length === 0 && (
+            <Typography variant="body2" color="textSecondary">
+              No 3D models yet.
+            </Typography>
+          )}
         </Box>
         {selectedObject && (
           <Box sx={{ mt: 2 }}>

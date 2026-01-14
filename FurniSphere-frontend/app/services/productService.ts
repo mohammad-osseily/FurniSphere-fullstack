@@ -3,6 +3,7 @@
 import axios from "axios";
 import { getTokenFromLocalStorage } from "./authServices";
 import { Category, Product3D } from "@/types";
+import { Product } from "@/types/product";
 
 const API_URL = "http://127.0.0.1:8000/api"; // Adjust to your backend URL
 
@@ -25,6 +26,21 @@ export const fetchProductsWith3DModels = async (): Promise<Product3D[]> => {
     return response.data.products;
   } catch (error) {
     console.error("Failed to fetch 3D products:", error);
+    throw error;
+  }
+};
+
+export const fetchAllProducts = async (): Promise<Product[]> => {
+  try {
+    const response = await axios.get(`${API_URL}/products`);
+    const payload =
+      response.data?.data ??
+      response.data?.products ??
+      response.data ??
+      [];
+    return Array.isArray(payload) ? (payload as Product[]) : [];
+  } catch (error) {
+    console.error("Failed to fetch products list:", error);
     throw error;
   }
 };
