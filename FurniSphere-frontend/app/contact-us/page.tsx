@@ -1,33 +1,33 @@
-"use client";
+'use client';
 
-import { useState, useEffect } from "react";
-import { emitToast } from "../lib/toast";
+import { useState, useEffect } from 'react';
+import { emitToast } from '../lib/toast';
 
 export default function ContactUs() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [message, setMessage] = useState("");
-  const [toast, setToast] = useState({ show: false, message: "" });
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [message, setMessage] = useState('');
+  const [toast, setToast] = useState({ show: false, message: '' });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Form submitted:", { name, email, message });
-    emitToast("Message sent! We'll get back to you soon.", "success");
+    console.log('Form submitted:', { name, email, message });
+    emitToast("Message sent! We'll get back to you soon.", 'success');
     setToast({
       show: true,
       message: "Message sent! We'll get back to you soon.",
     });
 
     // Clear inputs
-    setName("");
-    setEmail("");
-    setMessage("");
+    setName('');
+    setEmail('');
+    setMessage('');
   };
 
   useEffect(() => {
     if (toast.show) {
       const timer = setTimeout(() => {
-        setToast({ show: false, message: "" });
+        setToast({ show: false, message: '' });
       }, 3000);
       return () => clearTimeout(timer);
     }
@@ -41,7 +41,9 @@ export default function ContactUs() {
             <p className="text-xs uppercase tracking-[0.25em] text-white/80">
               Contact
             </p>
-            <h1 className="mt-2 text-3xl font-semibold">We’d love to hear from you</h1>
+            <h1 className="mt-2 text-3xl font-semibold">
+              We’d love to hear from you
+            </h1>
             <p className="mt-1 text-sm text-white/90">
               Tell us what you need—product help, partnerships, or feedback.
             </p>
@@ -50,7 +52,10 @@ export default function ContactUs() {
           <div className="grid gap-8 px-6 py-8 md:grid-cols-[1.2fr_1fr]">
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-800">
+                <label
+                  htmlFor="name"
+                  className="block text-sm font-medium text-gray-800"
+                >
                   Name
                 </label>
                 <input
@@ -64,7 +69,10 @@ export default function ContactUs() {
                 />
               </div>
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-800">
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-medium text-gray-800"
+                >
                   Email
                 </label>
                 <input
@@ -78,7 +86,10 @@ export default function ContactUs() {
                 />
               </div>
               <div>
-                <label htmlFor="message" className="block text-sm font-medium text-gray-800">
+                <label
+                  htmlFor="message"
+                  className="block text-sm font-medium text-gray-800"
+                >
                   Message
                 </label>
                 <textarea
@@ -101,36 +112,50 @@ export default function ContactUs() {
 
             <div className="space-y-4 rounded-xl border border-gray-100 bg-gray-50 px-4 py-5 text-sm text-gray-700">
               <div>
-                <h3 className="text-base font-semibold text-gray-900">Quick help</h3>
+                <h3 className="text-base font-semibold text-gray-900">
+                  Quick help
+                </h3>
                 <p className="mt-1 text-sm text-gray-700">
-                  Check our FAQs or send us a note—most questions are answered within one business day.
+                  Check our FAQs or send us a note—most questions are answered
+                  within one business day.
                 </p>
               </div>
               <div className="grid gap-2">
                 <div className="flex items-center gap-2 rounded-lg border border-gray-100 bg-white px-3 py-2">
                   <span className="h-2 w-2 rounded-full bg-emerald-500" />
                   <div>
-                    <p className="text-sm font-semibold text-gray-900">Support</p>
-                    <p className="text-xs text-gray-600">help@furnisphere.com</p>
+                    <p className="text-sm font-semibold text-gray-900">
+                      Support
+                    </p>
+                    <p className="text-xs text-gray-600">
+                      help@furnisphere.com
+                    </p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2 rounded-lg border border-gray-100 bg-white px-3 py-2">
                   <span className="h-2 w-2 rounded-full bg-emerald-500" />
                   <div>
-                    <p className="text-sm font-semibold text-gray-900">Partnerships</p>
-                    <p className="text-xs text-gray-600">partners@furnisphere.com</p>
+                    <p className="text-sm font-semibold text-gray-900">
+                      Partnerships
+                    </p>
+                    <p className="text-xs text-gray-600">
+                      partners@furnisphere.com
+                    </p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2 rounded-lg border border-gray-100 bg-white px-3 py-2">
                   <span className="h-2 w-2 rounded-full bg-emerald-500" />
                   <div>
                     <p className="text-sm font-semibold text-gray-900">Sales</p>
-                    <p className="text-xs text-gray-600">sales@furnisphere.com</p>
+                    <p className="text-xs text-gray-600">
+                      sales@furnisphere.com
+                    </p>
                   </div>
                 </div>
               </div>
               <div className="rounded-lg border border-primary/20 bg-primary/5 px-3 py-3 text-xs text-primary">
-                Prefer a call? Schedule a 15-minute intro and we’ll demo the 3D tools live.
+                Prefer a call? Schedule a 15-minute intro and we’ll demo the 3D
+                tools live.
               </div>
             </div>
           </div>

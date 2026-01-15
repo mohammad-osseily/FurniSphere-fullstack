@@ -1,16 +1,16 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import Image from "next/image";
+import { useEffect, useState } from 'react';
+import Image from 'next/image';
 import {
   getCart,
   removeFromCart,
   updateCartQuantity,
-} from "../services/orderServices";
-import { Cart } from "@/types/cart";
-import { CartProduct } from "@/types/cartProduct";
-import Link from "next/link";
-import { Trash2, Plus, Minus, ShoppingCart } from "lucide-react";
+} from '../services/orderServices';
+import { Cart } from '@/types/cart';
+import { CartProduct } from '@/types/cartProduct';
+import Link from 'next/link';
+import { Trash2, Plus, Minus, ShoppingCart } from 'lucide-react';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Swal from 'sweetalert2';
@@ -21,10 +21,10 @@ const MySwal = withReactContent(Swal);
 const CartPage = () => {
   const [cart, setCart] = useState<Cart | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
-  const [subTotal, setSubTotal] = useState<string>("0.00");
-  const [taxes, setTaxes] = useState<string>("0.00");
-  const [deliveryPrice, setDeliveryPrice] = useState<string>("0.00");
-  const [total, setTotal] = useState<string>("0.00");
+  const [subTotal, setSubTotal] = useState<string>('0.00');
+  const [taxes, setTaxes] = useState<string>('0.00');
+  const [deliveryPrice, setDeliveryPrice] = useState<string>('0.00');
+  const [total, setTotal] = useState<string>('0.00');
 
   const fetchCart = async () => {
     try {
@@ -35,7 +35,7 @@ const CartPage = () => {
       setDeliveryPrice(cartData.delivery_price);
       setTotal(cartData.total);
     } catch (error) {
-      console.error("Failed to load cart:", error);
+      console.error('Failed to load cart:', error);
     } finally {
       setLoading(false);
     }
@@ -53,14 +53,14 @@ const CartPage = () => {
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, remove it!'
+      confirmButtonText: 'Yes, remove it!',
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
           await removeFromCart(id);
           await fetchCart();
           toast.success(`${productName} has been removed from your cart.`, {
-            position: "top-right",
+            position: 'top-right',
             autoClose: 3000,
             hideProgressBar: false,
             closeOnClick: true,
@@ -68,9 +68,9 @@ const CartPage = () => {
             draggable: true,
           });
         } catch (error) {
-          console.error("Failed to remove item:", error);
-          toast.error("Failed to remove item. Please try again.", {
-            position: "top-right",
+          console.error('Failed to remove item:', error);
+          toast.error('Failed to remove item. Please try again.', {
+            position: 'top-right',
             autoClose: 3000,
             hideProgressBar: false,
             closeOnClick: true,
@@ -87,9 +87,9 @@ const CartPage = () => {
       await updateCartQuantity(id, quantity);
       await fetchCart();
     } catch (error) {
-      console.error("Failed to update quantity:", error);
-      toast.error("Failed to update quantity. Please try again.", {
-        position: "top-right",
+      console.error('Failed to update quantity:', error);
+      toast.error('Failed to update quantity. Please try again.', {
+        position: 'top-right',
         autoClose: 3000,
         hideProgressBar: false,
         closeOnClick: true,
@@ -151,7 +151,7 @@ const CartPage = () => {
               <div className="flex-grow text-center sm:text-left">
                 <h3 className="text-xl font-semibold">{item.product.name}</h3>
                 <p className="text-gray-600">
-                  Category: {item.product.category?.name || "N/A"}
+                  Category: {item.product.category?.name || 'N/A'}
                 </p>
                 <p className="text-gray-600">Color: {item.product.color}</p>
                 <div className="flex items-center justify-center sm:justify-start space-x-2 mt-2">

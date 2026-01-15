@@ -1,7 +1,7 @@
 // components/ProductList.tsx
-import React from "react";
-import Image from "next/image";
-import { Product } from "@/types";
+import React from 'react';
+import Image from 'next/image';
+import { Product } from '@/types';
 
 interface ProductListProps {
   products: Product[];

@@ -1,5 +1,5 @@
 // types/product.ts
-import { Pagination } from "./pagination";
+import { Pagination } from './pagination';
 
 export interface Product {
   id: number;
@@ -12,6 +12,10 @@ export interface Product {
   color: string;
   created_at: string;
   updated_at: string;
+  category?: {
+    id?: number;
+    name?: string;
+  };
 }
 export interface Product3D {
   id: number;

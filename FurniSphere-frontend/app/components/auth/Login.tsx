@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import React from "react";
-import { useForm } from "react-hook-form";
-import { useRouter } from "next/navigation";
-import { loginUser } from "../../services/authServices";
-import Swal from "sweetalert2";
-import "sweetalert2/dist/sweetalert2.min.css";
-import Link from "next/link";
-import { Mail, Lock, ArrowRight } from "lucide-react";
+import React from 'react';
+import { useForm } from 'react-hook-form';
+import { useRouter } from 'next/navigation';
+import { loginUser } from '../../services/authServices';
+import Swal from 'sweetalert2';
+import 'sweetalert2/dist/sweetalert2.min.css';
+import Link from 'next/link';
+import { Mail, Lock, ArrowRight } from 'lucide-react';
 
 interface LoginFormInputs {
   email: string;
@@ -27,23 +27,23 @@ const Login: React.FC = () => {
       const user = await loginUser(data.email, data.password);
 
       Swal.fire({
-        title: "Success!",
-        text: "You have logged in successfully!",
-        icon: "success",
-        confirmButtonText: "OK",
+        title: 'Success!',
+        text: 'You have logged in successfully!',
+        icon: 'success',
+        confirmButtonText: 'OK',
       }).then(() => {
-        if (user.role === "admin") {
-          router.push("/admin-dashboard");
+        if (user.role === 'admin') {
+          router.push('/admin-dashboard');
         } else {
-          router.push("/");
+          router.push('/');
         }
       });
     } catch (err) {
       Swal.fire({
-        title: "Error!",
-        text: "Login failed. Please try again.",
-        icon: "error",
-        confirmButtonText: "OK",
+        title: 'Error!',
+        text: 'Login failed. Please try again.',
+        icon: 'error',
+        confirmButtonText: 'OK',
       });
     }
   };
@@ -69,7 +69,7 @@ const Login: React.FC = () => {
                 id="email"
                 type="email"
                 placeholder="Enter your email"
-                {...register("email", { required: "Email is required" })}
+                {...register('email', { required: 'Email is required' })}
                 className="w-full h-12 pl-10 pr-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
               />
               <Mail
@@ -96,7 +96,7 @@ const Login: React.FC = () => {
                 id="password"
                 type="password"
                 placeholder="Enter your password"
-                {...register("password", { required: "Password is required" })}
+                {...register('password', { required: 'Password is required' })}
                 className="w-full h-12 pl-10 pr-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
               />
               <Lock
@@ -124,7 +124,7 @@ const Login: React.FC = () => {
 
         <div className="text-center">
           <p className="text-gray-600">
-            Don&rsquo;t have an account?{" "}
+            Don&rsquo;t have an account?{' '}
             <Link
               href="/register"
               className="text-primary hover:underline font-medium"

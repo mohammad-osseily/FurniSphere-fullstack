@@ -1,8 +1,8 @@
-import Image from "next/image";
+import Image from 'next/image';
 
 const products = [
-  { id: 1, name: "Classy Sofa", price: "$499", image: "/images/sofa1.png" },
-  { id: 2, name: "Elegant Chair", price: "$199", image: "/images/chair1.png" },
+  { id: 1, name: 'Classy Sofa', price: '$499', image: '/images/sofa1.png' },
+  { id: 2, name: 'Elegant Chair', price: '$199', image: '/images/chair1.png' },
   // Add more products here
 ];
 

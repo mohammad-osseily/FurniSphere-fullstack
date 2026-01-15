@@ -1,8 +1,9 @@
-"use client";
-import React, { useState } from "react";
-import Image from "next/image";
-import ProductModal from "./ProductModal";
-import { Category, Product } from "@/types";
+'use client';
+import React, { useState } from 'react';
+import Image from 'next/image';
+import ProductModal from './ProductModal';
+import { Category, Product } from '@/types';
+import { addToCart } from '../services/orderServices';
 
 interface ProductPageProps {
   categories: Category[];
@@ -12,14 +13,24 @@ const ProductPage: React.FC<ProductPageProps> = ({ categories }) => {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const handleAddToCart = async () => {
+  const openModal = (product: Product) => {
+    setSelectedProduct(product);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setSelectedProduct(null);
+    setIsModalOpen(false);
+  };
+
+  const handleAddToCart = async (product: Product) => {
     try {
       await addToCart(product.id, 1); // Add to cart with quantity 1
-      alert("Product added to cart successfully!");
-      onClose();
+      alert('Product added to cart successfully!');
+      closeModal();
     } catch (error) {
-      console.error("Failed to add to cart:", error);
-      alert("Failed to add product to cart.");
+      console.error('Failed to add to cart:', error);
+      alert('Failed to add product to cart.');
     }
   };
 
@@ -33,7 +44,7 @@ const ProductPage: React.FC<ProductPageProps> = ({ categories }) => {
               <div
                 key={product.id}
                 className="border rounded-lg p-4 cursor-pointer hover:shadow-lg"
-                onClick={() => handleAddToCart(product)}
+                onClick={() => openModal(product)}
               >
                 <div className="relative w-full h-48 mb-4">
                   <Image
@@ -55,7 +66,7 @@ const ProductPage: React.FC<ProductPageProps> = ({ categories }) => {
       <ProductModal
         product={selectedProduct}
         isOpen={isModalOpen}
-        onRequestClose={closeModal}
+        onClose={closeModal}
       />
     </div>
   );

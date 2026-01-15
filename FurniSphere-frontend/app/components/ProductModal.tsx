@@ -13,7 +13,11 @@ interface ProductModalProps {
   onClose: () => void;
 }
 
-const ProductModal: React.FC<ProductModalProps> = ({ product, isOpen, onClose }) => {
+const ProductModal: React.FC<ProductModalProps> = ({
+  product,
+  isOpen,
+  onClose,
+}) => {
   const [isVisible, setIsVisible] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [imageLoaded, setImageLoaded] = useState(false);
@@ -132,26 +136,26 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, isOpen, onClose })
           >
             <X className="w-5 h-5 text-neutral" />
           </button>
-          
+
           {/* Image Section */}
           <div className="w-full lg:w-1/2 p-6 flex items-center justify-center bg-base-100 relative">
             {!imageLoaded && !imageError && (
               <div className="absolute inset-0 bg-base-300 animate-pulse rounded-lg" />
             )}
-          <div className="relative w-full aspect-square max-h-[500px]">
-            <Image
-              src={imageUrl}
-              alt={product.name}
-              fill
-              sizes="(max-width: 1024px) 100vw, 50vw"
-              className={`rounded-lg object-cover transition-opacity duration-300 ${
-                imageLoaded ? 'opacity-100' : 'opacity-0'
-              }`}
-              priority
-              unoptimized
-              onError={() => setImageError(true)}
-              onLoadingComplete={() => setImageLoaded(true)}
-            />
+            <div className="relative w-full aspect-square max-h-[500px]">
+              <Image
+                src={imageUrl}
+                alt={product.name}
+                fill
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className={`rounded-lg object-cover transition-opacity duration-300 ${
+                  imageLoaded ? 'opacity-100' : 'opacity-0'
+                }`}
+                priority
+                unoptimized
+                onError={() => setImageError(true)}
+                onLoadingComplete={() => setImageLoaded(true)}
+              />
 
               {/* Image Navigation Arrows */}
               {imageCount > 1 && (
@@ -181,7 +185,9 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, isOpen, onClose })
                       key={index}
                       onClick={() => setCurrentImageIndex(index)}
                       className={`w-2 h-2 rounded-full transition-colors ${
-                        index === currentImageIndex ? 'bg-success' : 'bg-base-300'
+                        index === currentImageIndex
+                          ? 'bg-success'
+                          : 'bg-base-300'
                       }`}
                       aria-label={`Go to image ${index + 1}`}
                     />
@@ -190,18 +196,20 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, isOpen, onClose })
               )}
             </div>
           </div>
-          
+
           {/* Content Section */}
           <div className="w-full lg:w-1/2 p-6 lg:p-8 flex flex-col justify-between overflow-y-auto">
             <div>
               {/* Brand */}
-              <p className="text-sm text-success mb-2 font-medium">FurniSphere</p>
+              <p className="text-sm text-success mb-2 font-medium">
+                FurniSphere
+              </p>
 
               {/* Product Name */}
               <h2 className="text-3xl lg:text-4xl font-bold text-neutral mb-4">
                 {product.name}
               </h2>
-              
+
               {/* Price */}
               <p className="text-3xl font-bold text-primary mb-6">
                 ${formatPrice(product.price)}
@@ -209,7 +217,9 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, isOpen, onClose })
 
               {/* Color */}
               <div className="mb-6">
-                <h3 className="text-lg font-semibold text-neutral mb-2">Color</h3>
+                <h3 className="text-lg font-semibold text-neutral mb-2">
+                  Color
+                </h3>
                 <div className="flex items-center gap-3">
                   <span className="px-4 py-2 bg-base-100 rounded-lg text-neutral font-medium border border-base-300">
                     {product.color}
@@ -222,7 +232,9 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, isOpen, onClose })
                 <div className="mb-6">
                   <p className="text-sm text-neutral">
                     {product.stock > 0 ? (
-                      <span className="text-success">In Stock ({product.stock} available)</span>
+                      <span className="text-success">
+                        In Stock ({product.stock} available)
+                      </span>
                     ) : (
                       <span className="text-error">Out of Stock</span>
                     )}
@@ -232,25 +244,35 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, isOpen, onClose })
 
               {/* Description */}
               <div className="mb-6">
-                <h3 className="text-lg font-semibold text-neutral mb-2">Description</h3>
-                <p className="text-neutral leading-relaxed">{product.description}</p>
+                <h3 className="text-lg font-semibold text-neutral mb-2">
+                  Description
+                </h3>
+                <p className="text-neutral leading-relaxed">
+                  {product.description}
+                </p>
               </div>
             </div>
 
             {/* Add to Cart Button */}
             <div className="mt-6">
-            <button
-              onClick={handleAddToCart}
-                disabled={product.stock !== undefined && product.stock !== null && product.stock === 0}
+              <button
+                onClick={handleAddToCart}
+                disabled={
+                  product.stock !== undefined &&
+                  product.stock !== null &&
+                  product.stock === 0
+                }
                 className="w-full flex items-center justify-center gap-2 px-6 py-4 bg-primary text-base-200 rounded-xl font-medium hover:bg-primary/90 active:bg-primary/80 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <ShoppingCart className="w-5 h-5" />
                 <span>
-                  {product.stock !== undefined && product.stock !== null && product.stock === 0
+                  {product.stock !== undefined &&
+                  product.stock !== null &&
+                  product.stock === 0
                     ? 'Out of Stock'
                     : 'Add to Cart'}
                 </span>
-            </button>
+              </button>
             </div>
           </div>
         </div>
@@ -260,5 +282,3 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, isOpen, onClose })
 };
 
 export default ProductModal;
-
-
