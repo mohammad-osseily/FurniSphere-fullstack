@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import {
   getCart,
   removeFromCart,
@@ -137,11 +138,16 @@ const CartPage = () => {
               key={item.id}
               className="flex flex-col sm:flex-row items-center bg-white p-4 rounded-lg shadow-md space-y-4 sm:space-y-0 sm:space-x-4"
             >
-              <img
-                src={`/static/images/${item.product.image}.jpg`}
-                alt={item.product.name}
-                className="w-32 h-32 object-cover rounded-md"
-              />
+              <div className="relative w-32 h-32">
+                <Image
+                  src={`/static/images/${item.product.image}.jpg`}
+                  alt={item.product.name}
+                  fill
+                  className="object-cover rounded-md"
+                  sizes="128px"
+                  unoptimized
+                />
+              </div>
               <div className="flex-grow text-center sm:text-left">
                 <h3 className="text-xl font-semibold">{item.product.name}</h3>
                 <p className="text-gray-600">

@@ -3,6 +3,7 @@
 import React, { useState, useCallback, useMemo, memo } from 'react';
 import { Product } from '@/types';
 import { Heart } from 'lucide-react';
+import Image from 'next/image';
 
 interface ProductCardProps {
   product: Product;
@@ -103,16 +104,18 @@ const ProductCard: React.FC<ProductCardProps> = ({
         {!imageLoaded && (
           <div className="absolute inset-0 bg-base-300 animate-pulse" />
         )}
-        <img
+        <Image
           src={imageUrl}
           alt={product.name}
-          className={`w-full h-full object-cover transition-opacity duration-300 ${
+          fill
+          sizes="(max-width: 768px) 100vw, 25vw"
+          className={`object-cover transition-opacity duration-300 ${
             imageLoaded ? 'opacity-100' : 'opacity-0'
           }`}
-          loading="lazy"
-          decoding="async"
+          priority={false}
+          unoptimized
           onError={handleImageError}
-          onLoad={handleImageLoad}
+          onLoadingComplete={handleImageLoad}
         />
 
         {/* Best Seller Badge */}
