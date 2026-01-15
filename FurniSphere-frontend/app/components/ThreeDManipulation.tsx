@@ -192,13 +192,13 @@ export default function ThreeDManipulation({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (!scene) {
       return;
     }
     clearModels(scene);
     loadModels(scene);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [refreshKey, scene]);
 
   const handleDeleteObject = async (id: number, name: string) => {
