@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState, useCallback } from 'react';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
@@ -92,45 +92,50 @@ export default function ThreeDManipulation({
     return { newScene, newCamera, newRenderer, newControls };
   };
 
-  const clearModels = (targetScene: THREE.Scene) => {
-    modelObjects.forEach(({ model }) => {
-      targetScene.remove(model);
-    });
-    setModelObjects([]);
-  };
-
-  const loadModels = async (newScene: THREE.Scene) => {
-    try {
-      if (isLoadingModels) return;
-      setIsLoadingModels(true);
-      // Remove previously added model meshes before reloading.
-      modelObjects.forEach(({ model }) => newScene.remove(model));
+  const clearModels = useCallback(
+    (targetScene: THREE.Scene) => {
+      modelObjects.forEach(({ model }) => {
+        targetScene.remove(model);
+      });
       setModelObjects([]);
+    },
+    [modelObjects]
+  );
 
-      const products3D = await fetchAll3DProducts();
-      const newModelObjects: ModelObject[] = [];
+  const loadModels = useCallback(
+    async (newScene: THREE.Scene) => {
+      try {
+        if (isLoadingModels) return;
+        setIsLoadingModels(true);
+        modelObjects.forEach(({ model }) => newScene.remove(model));
+        setModelObjects([]);
 
-      for (const product of products3D) {
-        const model = await loadModel(
-          product.id,
-          product.model_file_path,
-          `/models/${product.model_file_path}.glb`,
-          [product.position.x, product.position.z, product.position.y],
-          [product.scale.x, product.scale.y, product.scale.z],
-          newScene
-        );
-        if (model) {
-          newModelObjects.push(model);
+        const products3D = await fetchAll3DProducts();
+        const newModelObjects: ModelObject[] = [];
+
+        for (const product of products3D) {
+          const model = await loadModel(
+            product.id,
+            product.model_file_path,
+            `/models/${product.model_file_path}.glb`,
+            [product.position.x, product.position.z, product.position.y],
+            [product.scale.x, product.scale.y, product.scale.z],
+            newScene
+          );
+          if (model) {
+            newModelObjects.push(model);
+          }
         }
-      }
 
-      setModelObjects(newModelObjects);
-    } catch (error) {
-      console.error('Error fetching 3D models:', error);
-    } finally {
-      setIsLoadingModels(false);
-    }
-  };
+        setModelObjects(newModelObjects);
+      } catch (error) {
+        console.error('Error fetching 3D models:', error);
+      } finally {
+        setIsLoadingModels(false);
+      }
+    },
+    [fetchAll3DProducts, isLoadingModels, modelObjects]
+  );
 
   const loadModel = (
     id: number,

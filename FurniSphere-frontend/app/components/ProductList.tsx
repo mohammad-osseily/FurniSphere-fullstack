@@ -1,5 +1,6 @@
 // components/ProductList.tsx
 import React from "react";
+import Image from "next/image";
 import { Product } from "@/types";
 
 interface ProductListProps {
@@ -14,11 +15,16 @@ const ProductList: React.FC<ProductListProps> = ({ products }) => {
           key={product.id}
           className="border rounded-lg p-4 flex flex-col items-center"
         >
-          <img
-            src={product.image}
-            alt={product.name}
-            className="w-full h-48 object-cover rounded-lg mb-4"
-          />
+          <div className="relative w-full h-48 mb-4">
+            <Image
+              src={product.image}
+              alt={product.name}
+              fill
+              sizes="(max-width: 768px) 100vw, 25vw"
+              className="object-cover rounded-lg"
+              unoptimized
+            />
+          </div>
           <div className="text-xl font-semibold mb-2">{product.name}</div>
           <p className="text-gray-500 mb-2">${product.price}</p>
           <button className="bg-blue-500 text-white px-4 py-2 rounded">
