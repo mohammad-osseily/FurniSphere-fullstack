@@ -92,15 +92,12 @@ export default function ThreeDManipulation({
     return { newScene, newCamera, newRenderer, newControls };
   };
 
-  const clearModels = useCallback(
-    (targetScene: THREE.Scene) => {
-      modelObjects.forEach(({ model }) => {
-        targetScene.remove(model);
-      });
-      setModelObjects([]);
-    },
-    [modelObjects]
-  );
+  const clearModels = useCallback((targetScene: THREE.Scene) => {
+    modelObjects.forEach(({ model }) => {
+      targetScene.remove(model);
+    });
+    setModelObjects([]);
+  }, [modelObjects]);
 
   const loadModels = useCallback(
     async (newScene: THREE.Scene) => {
@@ -134,7 +131,7 @@ export default function ThreeDManipulation({
         setIsLoadingModels(false);
       }
     },
-    [fetchAll3DProducts, isLoadingModels, modelObjects]
+    [isLoadingModels, modelObjects]
   );
 
   const loadModel = (
