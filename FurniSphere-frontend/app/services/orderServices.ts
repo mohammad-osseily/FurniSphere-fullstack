@@ -99,6 +99,15 @@ export const submitOrder = async (orderData: any) => {
   }
 };
 
+// Convenience wrapper used by CheckoutPage
+export const createOrder = async (
+  address_line: string,
+  city: string,
+  comment?: string
+) => {
+  return submitOrder({ address_line, city, comment });
+};
+
 export const getOrderHistory = async () => {
   const token = getTokenFromLocalStorage();
   const response = await axios.get(`${API_URL}/orders/history`, {

@@ -56,10 +56,6 @@ const AddProduct: React.FC = () => {
           },
           success: {
             duration: 3000,
-            theme: {
-              primary: "green",
-              secondary: "black",
-            },
           },
         }}
       />

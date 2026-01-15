@@ -2,19 +2,17 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import {
-  getCartProducts,
-  removeProductFromCart,
-} from "../services/orderServices";
+import { getCart, removeFromCart } from "../services/orderServices";
 
 const CartPage = () => {
-  const [cartItems, setCartItems] = useState([]);
+  const [cartItems, setCartItems] = useState<any[]>([]);
   const router = useRouter();
 
   useEffect(() => {
     const fetchCartItems = async () => {
       try {
-        const products = await getCartProducts();
+        const cartResponse = await getCart();
+        const products = cartResponse?.cart?.cart_products || [];
         setCartItems(products);
       } catch (error) {
         console.error("Failed to fetch cart items:", error);
@@ -26,7 +24,7 @@ const CartPage = () => {
 
   const handleRemoveFromCart = async (id: any) => {
     try {
-      await removeProductFromCart(id);
+      await removeFromCart(id);
       setCartItems(cartItems.filter((item: any) => item.id !== id));
     } catch (error) {
       console.error("Failed to remove item from cart:", error);
