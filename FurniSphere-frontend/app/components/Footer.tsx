@@ -3,72 +3,78 @@ import { Facebook, Instagram, Twitter } from "lucide-react";
 
 export default function Footer() {
   return (
-    <footer className="w-full bg-base-200 py-8 sm:py-10 md:py-12">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col md:flex-row justify-between items-start gap-8 md:gap-4 lg:gap-8">
-          {/* Information Section */}
-          <div className="w-full md:w-1/4">
-            <h3 className="text-lg sm:text-xl font-bold text-neutral mb-3 sm:mb-4">Information</h3>
-            <ul className="space-y-2 sm:space-y-3">
-              <li>
-                <Link href="/about-us" className="text-sm sm:text-base text-neutral hover:text-primary transition-colors duration-200">
-                  About Us
-                </Link>
-              </li>
-              <li>
-                <Link href="/contact-us" className="text-sm sm:text-base text-neutral hover:text-primary transition-colors duration-200">
-                  Contact Us
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/terms-of-service"
-                  className="text-sm sm:text-base text-neutral hover:text-primary transition-colors duration-200"
-                >
-                  Terms Of Service
-                </Link>
-              </li>
-            </ul>
+    <footer className="w-full bg-gradient-to-b from-gray-50 via-white to-gray-50 border-t border-gray-200">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
+        <div className="grid gap-6 md:grid-cols-[1.1fr_1.3fr_0.8fr]">
+          {/* Brand / Information */}
+          <div className="space-y-4">
+            <div>
+              <p className="text-xs uppercase tracking-[0.3em] text-primary">FurniSphere</p>
+              <h3 className="text-xl font-semibold text-gray-900 mt-1">Design in 3D. Build with confidence.</h3>
+              <p className="mt-2 text-sm text-gray-600">
+                Visualize, customize, and collaborate on furniture and interiors—from concept to install.
+              </p>
+            </div>
+            <div className="grid grid-cols-2 gap-3 text-sm text-gray-700">
+              <Link href="/about-us" className="hover:text-primary transition-colors">
+                About Us
+              </Link>
+              <Link href="/contact-us" className="hover:text-primary transition-colors">
+                Contact Us
+              </Link>
+              <Link href="/terms-of-service" className="hover:text-primary transition-colors">
+                Terms of Service
+              </Link>
+              <Link href="/privacy-policy" className="hover:text-primary transition-colors">
+                Privacy
+              </Link>
+            </div>
           </div>
 
-          {/* News Teller Section */}
-          <div className="w-full md:w-2/4">
-            <h3 className="text-lg sm:text-xl font-bold text-neutral mb-3 sm:mb-4">News Teller</h3>
-            <p className="text-sm sm:text-base text-neutral mb-4 sm:mb-6">
-              Subscribe to get notified about product launches, special offers
-              and news.
+          {/* Newsletter */}
+            <div className="space-y-2">
+              <h3 className="text-base font-semibold text-gray-900">Stay in the loop</h3>
+              <p className="text-xs text-gray-600">
+              Get product drops, 3D tips, and build updates straight to your inbox.
             </p>
-            <form className="flex flex-col sm:flex-row gap-3 sm:gap-2">
+            <form className="flex flex-col sm:flex-row gap-3 sm:items-center">
               <input
                 type="email"
                 placeholder="Enter your email"
-                className="flex-grow px-4 py-2.5 sm:py-2 text-sm sm:text-base border border-base-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary bg-base-100 text-neutral"
+                className="flex-grow rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-sm shadow-sm focus:border-primary focus:outline-none"
                 required
               />
               <button
                 type="submit"
-                className="px-6 sm:px-4 py-2.5 sm:py-2 text-sm sm:text-base font-medium text-base-200 bg-primary rounded-lg hover:bg-primary/90 active:bg-primary/80 focus:outline-none focus:ring-2 focus:ring-primary transition-colors duration-200 whitespace-nowrap"
+                  className="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:opacity-90"
               >
                 Subscribe
               </button>
             </form>
+              <p className="text-[11px] text-gray-500">No spam. Unsubscribe anytime.</p>
           </div>
 
-          {/* Follow Us Section */}
-          <div className="w-full md:w-1/4 md:text-right">
-            <h3 className="text-lg sm:text-xl font-bold text-neutral mb-3 sm:mb-4 md:mb-4">Follow Us</h3>
-            <div className="flex md:justify-end gap-4 sm:gap-5">
-              <Link href="#" className="text-neutral hover:text-primary transition-colors duration-200" aria-label="Facebook">
-                <Facebook className="w-6 h-6 sm:w-7 sm:h-7" />
+          {/* Social */}
+          <div className="space-y-3 md:text-right">
+            <h3 className="text-base font-semibold text-gray-900">Follow us</h3>
+            <p className="text-xs text-gray-600">See what we’re building next.</p>
+            <div className="flex md:justify-end gap-3 sm:gap-4">
+              <Link href="#" className="text-gray-700 hover:text-primary transition-colors" aria-label="Facebook">
+                <Facebook className="w-5 h-5 sm:w-6 sm:h-6" />
               </Link>
-              <Link href="#" className="text-neutral hover:text-primary transition-colors duration-200" aria-label="Instagram">
-                <Instagram className="w-6 h-6 sm:w-7 sm:h-7" />
+              <Link href="#" className="text-gray-700 hover:text-primary transition-colors" aria-label="Instagram">
+                <Instagram className="w-5 h-5 sm:w-6 sm:h-6" />
               </Link>
-              <Link href="#" className="text-neutral hover:text-primary transition-colors duration-200" aria-label="Twitter">
-                <Twitter className="w-6 h-6 sm:w-7 sm:h-7" />
+              <Link href="#" className="text-gray-700 hover:text-primary transition-colors" aria-label="Twitter">
+                <Twitter className="w-5 h-5 sm:w-6 sm:h-6" />
               </Link>
             </div>
           </div>
+        </div>
+
+        <div className="mt-8 border-t border-gray-200 pt-3 text-[11px] text-gray-500 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+          <span>© {new Date().getFullYear()} FurniSphere. All rights reserved.</span>
+          <span className="text-gray-400">Built for immersive 3D design.</span>
         </div>
       </div>
     </footer>
