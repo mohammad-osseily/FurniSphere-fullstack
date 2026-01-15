@@ -4,8 +4,8 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { FaMicrophone } from 'react-icons/fa';
-import { fetchAll3DProducts } from "../services/product3dServices";
-import { useRouter } from "next/navigation";
+import { fetchAll3DProducts } from '../services/product3dServices';
+import { useRouter } from 'next/navigation';
 import axios from 'axios';
 
 declare global {
@@ -21,16 +21,30 @@ const ThreeScene = () => {
   const [chatResponse, setChatResponse] = useState('');
   const [interactionLog, setInteractionLog] = useState<string[]>([]);
   const [isRecording, setIsRecording] = useState(false);
-  const [modelObjects, setModelObjects] = useState<{ name: string, model: THREE.Object3D }[]>([]);
+  const [modelObjects, setModelObjects] = useState<
+    { name: string; key: string; model: THREE.Object3D }[]
+  >([]);
+  const [selectedModel, setSelectedModel] = useState<string>('');
+  const [manualPosition, setManualPosition] = useState<{
+    x: number;
+    y: number;
+    z: number;
+  }>({
+    x: 0,
+    y: 0,
+    z: 0,
+  });
   const router = useRouter();
 
-  const [staticPositions, setStaticPositions] = useState<{ [key: string]: [number, number, number] }>({
-    'chair': [0, 0, -8],
-    'sesk': [2, 0, -5],
-    'sofa': [4, 0, 6],
-    'desk': [-4, 0, -7],
+  const [staticPositions, setStaticPositions] = useState<{
+    [key: string]: [number, number, number];
+  }>({
+    chair: [0, 0, -8],
+    sesk: [2, 0, -5],
+    sofa: [4, 0, 6],
+    desk: [-4, 0, -7],
     'Modern Chair': [6, 0, -4],
-    'table': [0, 0, 0],
+    table: [0, 0, 0],
   });
 
   const sceneRef = useRef<THREE.Scene | null>(null);
@@ -38,7 +52,8 @@ const ThreeScene = () => {
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
   const controlsRef = useRef<OrbitControls | null>(null);
 
-  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const SpeechRecognition =
+    window.SpeechRecognition || window.webkitSpeechRecognition;
   const recognition = new SpeechRecognition();
   recognition.continuous = false;
 
@@ -62,27 +77,65 @@ const ThreeScene = () => {
     console.error('Speech Recognition Error:', event.error);
   };
 
-  const loadModels = useCallback(async (scene: THREE.Scene) => {
-    try {
-      const products3D = await fetchAll3DProducts();
-      const gltfLoader = new GLTFLoader();
+  const sanitizePosition = (pos: [number, number, number]) => {
+    const [x, y, z] = pos;
+    return [x, Math.max(0, y), z] as [number, number, number];
+  };
 
-      products3D.forEach(product => {
-        const position = staticPositions[product.model_file_path] || [0, 0, 0];
-        const url = `/models/${product.model_file_path}.glb`;
+  const loadModels = useCallback(
+    async (scene: THREE.Scene) => {
+      try {
+        const products3D = await fetchAll3DProducts();
+        const gltfLoader = new GLTFLoader();
 
-        gltfLoader.load(url, (gltf) => {
-          const model = gltf.scene;
-          model.position.set(position[0], position[1], position[2]);
-          model.scale.set(3, 3, 3);
-          scene.add(model);
-          setModelObjects(prev => [...prev, { name: product.name, model }]);
+        setModelObjects([]);
+        const seenKeys = new Set<string>();
+
+        products3D.forEach((product) => {
+          const key =
+            (product.id ? `model-${product.id}` : null) ||
+            product.model_file_path ||
+            product.name ||
+            `model-${Date.now()}`;
+          if (seenKeys.has(key)) return;
+          seenKeys.add(key);
+          const displayName =
+            (product.name ? `${product.name}` : product.model_file_path) ||
+            'Model';
+          const positionFromApi = product.position
+            ? sanitizePosition([
+                product.position.x,
+                product.position.y,
+                product.position.z,
+              ])
+            : [0, 0, 0];
+          const position = sanitizePosition(
+            staticPositions[key] || positionFromApi || [0, 0, 0]
+          );
+          const url = `/models/${product.model_file_path}.glb`;
+
+          gltfLoader.load(url, (gltf) => {
+            const model = gltf.scene;
+            model.position.set(position[0], position[1], position[2]);
+            model.scale.set(3, 3, 3);
+            scene.add(model);
+            setModelObjects((prev) => [
+              ...prev,
+              { name: displayName, key, model },
+            ]);
+            setStaticPositions((prev) =>
+              prev[key]
+                ? prev
+                : { ...prev, [key]: position as [number, number, number] }
+            );
+          });
         });
-      });
-    } catch (error) {
-      console.error("Error loading 3D models:", error);
-    }
-  }, [staticPositions]);
+      } catch (error) {
+        console.error('Error loading 3D models:', error);
+      }
+    },
+    [staticPositions]
+  );
 
   const initScene = useCallback(() => {
     if (!mountRef.current) return;
@@ -90,7 +143,12 @@ const ThreeScene = () => {
     const scene = new THREE.Scene();
     scene.background = new THREE.Color('white');
 
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const camera = new THREE.PerspectiveCamera(
+      75,
+      window.innerWidth / window.innerHeight,
+      0.1,
+      1000
+    );
     camera.position.set(0, 10, 20);
 
     const renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -103,7 +161,10 @@ const ThreeScene = () => {
     controls.enableZoom = true;
 
     const floorGeometry = new THREE.PlaneGeometry(20, 20);
-    const floorMaterial = new THREE.MeshBasicMaterial({ color: 'gray', side: THREE.DoubleSide });
+    const floorMaterial = new THREE.MeshBasicMaterial({
+      color: 'gray',
+      side: THREE.DoubleSide,
+    });
     const floor = new THREE.Mesh(floorGeometry, floorMaterial);
     floor.rotation.x = -Math.PI / 2;
     scene.add(floor);
@@ -151,21 +212,25 @@ const ThreeScene = () => {
   }, [loadModels]);
 
   const parseMovement = (objectName: string, direction: string) => {
-    console.log(`Movement triggered for object: ${objectName}, direction: ${direction}`);
-    
+    console.log(
+      `Movement triggered for object: ${objectName}, direction: ${direction}`
+    );
+
     const movementUnit = 5;
-    
-    const objectKey = Object.keys(staticPositions).find(key => key.toLowerCase() === objectName.toLowerCase());
-    console.log("Object key:", objectKey);
-    
+
+    const objectKey = Object.keys(staticPositions).find(
+      (key) => key.toLowerCase() === objectName.toLowerCase()
+    );
+    console.log('Object key:', objectKey);
+
     if (!objectKey) {
       console.error(`Object ${objectName} not found in staticPositions`);
       return;
     }
-    
+
     let [x, y, z] = staticPositions[objectKey];
     console.log(`Position before change: x=${x}, y=${y}, z=${z}`);
-    
+
     switch (direction.toLowerCase()) {
       case 'up':
         z -= movementUnit;
@@ -183,12 +248,67 @@ const ThreeScene = () => {
         console.error('Unknown direction:', direction);
         return;
     }
-    
-    setStaticPositions(prev => ({
+
+    setStaticPositions((prev) => ({
       ...prev,
-      [objectKey]: [x, y, z]
+      [objectKey]: [x, y, z],
     }));
+    const target = modelObjects.find(
+      (m) =>
+        m.key && objectKey && m.key.toLowerCase() === objectKey.toLowerCase()
+    );
+    if (target) {
+      target.model.position.set(x, y, z);
+    }
     console.log(`Position after change: x=${x}, y=${y}, z=${z}`);
+  };
+
+  const handleSelectModel = (key: string) => {
+    setSelectedModel(key);
+    const base = Object.keys(staticPositions).find(
+      (k) => k.toLowerCase() === key.toLowerCase()
+    );
+    const pos = base ? staticPositions[base] : [0, 0, 0];
+    setManualPosition({ x: pos[0], y: pos[1], z: pos[2] });
+  };
+
+  const applyManualPosition = () => {
+    if (!selectedModel) return;
+    const key =
+      Object.keys(staticPositions).find(
+        (k) => k.toLowerCase() === selectedModel.toLowerCase()
+      ) || selectedModel;
+    const { x, y, z } = manualPosition;
+    setStaticPositions((prev) => ({ ...prev, [key]: [x, y, z] }));
+    const target = modelObjects.find(
+      (m) => m.key && key && m.key.toLowerCase() === key.toLowerCase()
+    );
+    if (target) {
+      target.model.position.set(x, y, z);
+    }
+  };
+
+  const updateManualPosition = (axis: 'x' | 'y' | 'z', value: number) => {
+    setManualPosition((prev) => {
+      const next = { ...prev, [axis]: value };
+      if (selectedModel) {
+        const key =
+          Object.keys(staticPositions).find(
+            (k) => k.toLowerCase() === selectedModel.toLowerCase()
+          ) || selectedModel;
+        const target = modelObjects.find(
+          (m) => m.key && key && m.key.toLowerCase() === key.toLowerCase()
+        );
+        if (target) {
+          target.model.position.set(
+            axis === 'x' ? value : next.x,
+            axis === 'y' ? value : next.y,
+            axis === 'z' ? value : next.z
+          );
+        }
+      }
+      return next;
+    });
   };
 
   const handleChatSubmit = async (inputValue?: string) => {
@@ -202,13 +322,19 @@ const ThreeScene = () => {
     The user asked: "${currentInput}".`;
 
     try {
-      const response = await axios.post('http://127.0.0.1:8000/api/chat', { message: chatPrompt });
+      const response = await axios.post('http://127.0.0.1:8000/api/chat', {
+        message: chatPrompt,
+      });
       const aiResponse = response.data.response;
 
       setChatResponse(aiResponse);
-      setInteractionLog((prev) => [...prev, `You: ${currentInput}`, `AI: ${aiResponse}`]);
+      setInteractionLog((prev) => [
+        ...prev,
+        `You: ${currentInput}`,
+        `AI: ${aiResponse}`,
+      ]);
 
-      console.log("Model Objects:", modelObjects);
+      console.log('Model Objects:', modelObjects);
 
       const objectMatch = aiResponse.match(/(chair|desk|sofa|table)/i);
       const directionMatch = aiResponse.match(/(up|down|left|right)/i);
@@ -217,11 +343,13 @@ const ThreeScene = () => {
         const objectName = objectMatch[1];
         const direction = directionMatch[1];
 
-        console.log("Object Name to Match:", objectName);
+        console.log('Object Name to Match:', objectName);
 
         parseMovement(objectName, direction);
       } else {
-        console.warn("Could not understand AI response or find matching object/direction.");
+        console.warn(
+          'Could not understand AI response or find matching object/direction.'
+        );
       }
 
       setChatInput('');
@@ -232,98 +360,168 @@ const ThreeScene = () => {
   };
 
   return (
-    <div style={{ display: 'flex', height: '100vh' }}>
-      <div ref={mountRef} style={{ flex: 1, borderRight: '2px solid #e0e0e0' }} />
+    <div className="flex h-screen bg-gray-50">
+      <div ref={mountRef} className="flex-1 border-r border-gray-200" />
 
-      <div style={{ width: '400px', padding: '20px', backgroundColor: '#f9f9f9', borderLeft: '2px solid #e0e0e0', display: 'flex', flexDirection: 'column' }}>
-        <h3 style={{ marginBottom: '15px', textAlign: 'center', fontWeight: 'bold', color: '#333' }}>Chat with AI</h3>
-        <div style={{ flex: 1, overflowY: 'auto', marginBottom: '20px', backgroundColor: '#fff', padding: '10px', borderRadius: '8px', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
-          <div style={{ marginTop: '10px', fontSize: '14px' }}>
-            {interactionLog.map((log, index) => (
-              <p key={index} style={{ marginBottom: '8px', padding: '8px', borderRadius: '4px', backgroundColor: log.startsWith('You:') ? '#e3f2fd' : '#e8f5e9' }}>
-              {log}
-            </p>
-            ))}
+      <div className="w-[420px] p-5 flex flex-col gap-4 bg-white shadow-inner">
+        <div className="rounded-lg border border-gray-200 bg-gray-50 p-4">
+          <div className="flex items-center justify-between">
+            <h3 className="text-lg font-semibold text-gray-900">
+              Chat with AI
+            </h3>
+            <span className="text-xs text-gray-500">
+              If AI is offline, use manual controls below
+            </span>
           </div>
+          <div className="mt-3 h-48 overflow-y-auto rounded-md border border-gray-200 bg-white p-3">
+            <div className="space-y-2 text-sm">
+              {interactionLog.map((log, index) => (
+                <p
+                  key={index}
+                  className={`rounded px-2 py-1 ${
+                    log.startsWith('You:')
+                      ? 'bg-blue-50 text-blue-900'
+                      : 'bg-emerald-50 text-emerald-900'
+                  }`}
+                >
+                  {log}
+                </p>
+              ))}
+              {interactionLog.length === 0 && (
+                <p className="text-gray-500">No messages yet.</p>
+              )}
+            </div>
+          </div>
+          <input
+            type="text"
+            value={chatInput}
+            onChange={(e) => setChatInput(e.target.value)}
+            placeholder="Ask to move a chair left, right..."
+            className="mt-3 w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-primary focus:outline-none"
+          />
+          <div className="mt-3 flex items-center gap-3">
+            <button
+              onClick={() => handleChatSubmit()}
+              className="flex-1 rounded-md bg-primary px-3 py-2 text-sm font-semibold text-white shadow-sm"
+            >
+              Submit
+            </button>
+            <div
+              onMouseDown={startVoiceRecognition}
+              onMouseUp={stopVoiceRecognition}
+              className={`flex h-10 w-10 items-center justify-center rounded-full shadow-sm cursor-pointer ${
+                isRecording ? 'bg-orange-500 animate-pulse' : 'bg-primary'
+              }`}
+            >
+              <FaMicrophone className="text-white" />
+            </div>
+          </div>
+          {chatResponse && (
+            <p className="mt-2 text-xs text-gray-600">AI: {chatResponse}</p>
+          )}
         </div>
-        <input
-          type="text"
-          value={chatInput}
-          onChange={(e) => setChatInput(e.target.value)}
-          placeholder="Ask ChatGPT"
-          style={{
-            width: '100%',
-            padding: '12px',
-            fontSize: '16px',
-            marginBottom: '15px',
-            borderRadius: '6px',
-            border: '1px solid #ddd',
-            outline: 'none',
-            boxShadow: '0 1px 5px rgba(0,0,0,0.1)',
-          }}
-        />
-        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '15px' }}>
-          <button
-            onClick={() => handleChatSubmit()}
-            style={{
-              flex: 1,
-              
-              fontSize: '16px',
-              
-              marginRight: '10px',
-              backgroundColor: '#054C73',
-              color: '#fff',
-              borderRadius: '12px',
-              border: 'none',
-              cursor: 'pointer',
-              boxShadow: '0 1px 5px rgba(0,0,0,0.1)',
-            }}
-          >
-            Submit
-          </button>
 
-          <div
-            onMouseDown={startVoiceRecognition}
-            onMouseUp={stopVoiceRecognition}
-            style={{
-              backgroundColor: isRecording ? '#FF5722' : '#054C73',
-              borderRadius: '50%',
-              height: '40px',
-              width: '40px',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              boxShadow: '0 1px 5px rgba(0,0,0,0.1)',
-              cursor: 'pointer',
-              animation: isRecording ? 'pulse 1.5s infinite' : 'none',
-            }}
-          >
-            <FaMicrophone
-              style={{
-                color: '#fff',
-                fontSize: '20px',
-              }}
-            />
+        <div className="rounded-lg border border-gray-200 bg-gray-50 p-4">
+          <div className="flex items-center justify-between mb-2">
+            <h4 className="text-sm font-semibold text-gray-900">
+              Manual controls
+            </h4>
+            <span className="text-xs text-gray-500">
+              Use if AI is unavailable
+            </span>
+          </div>
+          <div className="mb-3 grid gap-2">
+            {modelObjects.map((obj) =>
+              // guard against missing names
+              (() => {
+                const displayName = obj.name || 'Model';
+                const tag = (obj.key || obj.name || 'model').toLowerCase();
+                const selectionKey = obj.key || displayName;
+                return (
+                  <button
+                    key={selectionKey}
+                    className={`flex items-center justify-between rounded-md border px-3 py-2 text-sm ${
+                      selectedModel === selectionKey
+                        ? 'border-primary bg-primary/10 text-primary'
+                        : 'border-gray-200 bg-white text-gray-800'
+                    }`}
+                    onClick={() => handleSelectModel(selectionKey)}
+                  >
+                    <span>{displayName}</span>
+                    <span className="text-[11px] text-gray-500">#{tag}</span>
+                  </button>
+                );
+              })()
+            )}
+            {modelObjects.length === 0 && (
+              <p className="text-xs text-gray-500">No models loaded yet.</p>
+            )}
+          </div>
+
+          <div className="space-y-3">
+            <div>
+              <div className="flex items-center justify-between text-xs text-gray-700 mb-1">
+                <span>X Position</span>
+                <span>{manualPosition.x.toFixed(2)}</span>
+              </div>
+              <input
+                type="range"
+                min={0}
+                max={10}
+                step={0.1}
+                value={manualPosition.x}
+                onChange={(e) =>
+                  updateManualPosition('x', Number(e.target.value))
+                }
+                className="w-full accent-primary"
+              />
+            </div>
+            <div>
+              <div className="flex items-center justify-between text-xs text-gray-700 mb-1">
+                <span>Y Position</span>
+                <span>{manualPosition.y.toFixed(2)}</span>
+              </div>
+              <input
+                type="range"
+                min={0}
+                max={10}
+                step={0.1}
+                value={manualPosition.y}
+                onChange={(e) =>
+                  updateManualPosition('y', Number(e.target.value))
+                }
+                className="w-full accent-primary"
+              />
+            </div>
+            <div>
+              <div className="flex items-center justify-between text-xs text-gray-700 mb-1">
+                <span>Z Position</span>
+                <span>{manualPosition.z.toFixed(2)}</span>
+              </div>
+              <input
+                type="range"
+                min={0}
+                max={10}
+                step={0.1}
+                value={manualPosition.z}
+                onChange={(e) =>
+                  updateManualPosition('z', Number(e.target.value))
+                }
+                className="w-full accent-primary"
+              />
+            </div>
+            <button
+              onClick={applyManualPosition}
+              className="w-full rounded-md bg-primary px-3 py-2 text-sm font-semibold text-white shadow-sm disabled:opacity-60"
+              disabled={!selectedModel}
+            >
+              {selectedModel
+                ? `Apply to ${selectedModel}`
+                : 'Select a model first'}
+            </button>
           </div>
         </div>
       </div>
-
-      <style jsx>{`
-        @keyframes pulse {
-          0% {
-            transform: scale(1);
-            box-shadow: 0 0 0 0 rgba(255, 87, 34, 0.7);
-          }
-          70% {
-            transform: scale(1.1);
-            box-shadow: 0 0 15px 10px rgba(255, 87, 34, 0);
-          }
-          100% {
-            transform: scale(1);
-            box-shadow: 0 0 0 0 rgba(255, 87, 34, 0);
-          }
-        }
-      `}</style>
     </div>
   );
 };

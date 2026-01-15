@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from 'react';
 import {
   Button,
   TextField,
@@ -9,30 +9,30 @@ import {
   CircularProgress,
   Select,
   MenuItem,
-} from "@mui/material";
+} from '@mui/material';
 import {
   Create3DProductPayload,
   create3DProduct,
   fetchAll3DProducts,
   delete3DProduct,
-} from "../services/product3dServices";
-import { fetchAllProducts } from "../services/productService";
-import { Product } from "@/types/product";
-import { Product3D } from "@/types";
+} from '../services/product3dServices';
+import { fetchAllProducts } from '../services/productService';
+import { Product } from '@/types/product';
+import { Product3D } from '@/types';
 
 type Add3DProductProps = {
   onCreated?: () => void;
 };
 
 const Add3DProduct = ({ onCreated }: Add3DProductProps) => {
-  const [productId, setProductId] = useState("");
-  const [modelFilePath, setModelFilePath] = useState("");
+  const [productId, setProductId] = useState('');
+  const [modelFilePath, setModelFilePath] = useState('');
   const [position, setPosition] = useState({ x: 0, y: 0, z: 0 });
   const [scale, setScale] = useState({ x: 3, y: 3, z: 3 });
   const [rotation, setRotation] = useState({ x: 0, y: 0, z: 0 });
   const [isLoading, setIsLoading] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState('');
   const [products, setProducts] = useState<Product[]>([]);
   const [isFetchingProducts, setIsFetchingProducts] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -42,12 +42,25 @@ const Add3DProduct = ({ onCreated }: Add3DProductProps) => {
   const [entries3D, setEntries3D] = useState<Product3D[]>([]);
   const [isFetchingEntries, setIsFetchingEntries] = useState(false);
 
+  const usedModelBaseNames = useMemo(() => {
+    return new Set(
+      entries3D.map((entry) => entry.model_file_path.toLowerCase())
+    );
+  }, [entries3D]);
+
+  const availableModelFiles = useMemo(() => {
+    return modelFiles.filter((file) => {
+      const base = file.replace(/\.glb$/i, '').toLowerCase();
+      return !usedModelBaseNames.has(base);
+    });
+  }, [modelFiles, usedModelBaseNames]);
+
   const sortedProducts = useMemo(() => {
     if (!Array.isArray(products)) {
       return [];
     }
     return [...products].sort((a, b) =>
-      a.name.localeCompare(b.name, "en", { sensitivity: "base" })
+      a.name.localeCompare(b.name, 'en', { sensitivity: 'base' })
     );
   }, [products]);
 
@@ -57,7 +70,7 @@ const Add3DProduct = ({ onCreated }: Add3DProductProps) => {
       const list = await fetchAllProducts();
       setProducts(list);
     } catch (error) {
-      setMessage("Failed to load products. Please refresh.");
+      setMessage('Failed to load products. Please refresh.');
     } finally {
       setIsFetchingProducts(false);
     }
@@ -70,7 +83,7 @@ const Add3DProduct = ({ onCreated }: Add3DProductProps) => {
   const loadModelFiles = async () => {
     setIsFetchingFiles(true);
     try {
-      const response = await fetch("/api/models/list");
+      const response = await fetch('/api/models/list');
       const data = (await response.json()) as { files?: string[] };
       setModelFiles(Array.isArray(data.files) ? data.files : []);
     } catch (_error) {
@@ -106,27 +119,27 @@ const Add3DProduct = ({ onCreated }: Add3DProductProps) => {
       return;
     }
 
-    const normalizedName = file.name.trim().replace(/\s+/g, "-");
-    const baseName = normalizedName.replace(/\.glb$/i, "");
+    const normalizedName = file.name.trim().replace(/\s+/g, '-');
+    const baseName = normalizedName.replace(/\.glb$/i, '');
     setModelFilePath(baseName);
   };
 
   const uploadModelToPublic = async (): Promise<string> => {
     if (!selectedFile) {
-      throw new Error("Please choose a .glb file first.");
+      throw new Error('Please choose a .glb file first.');
     }
     setIsUploading(true);
     const formData = new FormData();
-    formData.append("file", selectedFile);
+    formData.append('file', selectedFile);
 
-    const response = await fetch("/api/upload-model", {
-      method: "POST",
+    const response = await fetch('/api/upload-model', {
+      method: 'POST',
       body: formData,
     });
 
     if (!response.ok) {
       const text = await response.text();
-      throw new Error(text || "Upload failed");
+      throw new Error(text || 'Upload failed');
     }
 
     const data = (await response.json()) as { baseName: string };
@@ -136,17 +149,17 @@ const Add3DProduct = ({ onCreated }: Add3DProductProps) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!productId) {
-      setMessage("Please select a product.");
+      setMessage('Please select a product.');
       return;
     }
 
     if (!selectedFile && !modelFilePath) {
-      setMessage("Choose a .glb file or pick one from the list.");
+      setMessage('Choose a .glb file or pick one from the list.');
       return;
     }
 
     setIsLoading(true);
-    setMessage("");
+    setMessage('');
 
     try {
       let baseName = modelFilePath;
@@ -165,9 +178,9 @@ const Add3DProduct = ({ onCreated }: Add3DProductProps) => {
       };
 
       await create3DProduct(payload);
-      setMessage("3D product added successfully!");
-      setProductId("");
-      setModelFilePath("");
+      setMessage('3D product added successfully!');
+      setProductId('');
+      setModelFilePath('');
       setPosition({ x: 0, y: 0, z: 0 });
       setScale({ x: 3, y: 3, z: 3 });
       setRotation({ x: 0, y: 0, z: 0 });
@@ -177,7 +190,7 @@ const Add3DProduct = ({ onCreated }: Add3DProductProps) => {
       loadEntries3D();
       onCreated?.();
     } catch (error) {
-      setMessage("Error adding 3D product. Please try again.");
+      setMessage('Error adding 3D product. Please try again.');
     } finally {
       setIsUploading(false);
       setIsLoading(false);
@@ -188,113 +201,119 @@ const Add3DProduct = ({ onCreated }: Add3DProductProps) => {
     <Box
       component="form"
       onSubmit={handleSubmit}
-      sx={{ maxWidth: 500, margin: "auto", mt: 4 }}
+      sx={{ maxWidth: 500, margin: 'auto', mt: 4 }}
     >
       <Typography variant="h6" gutterBottom>
         Add 3D Product
       </Typography>
 
       <Box sx={{ mt: 1, mb: 3 }}>
-        <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <Typography variant="subtitle1">Existing model files</Typography>
-          <Button size="small" onClick={loadModelFiles} disabled={isFetchingFiles}>
-            Refresh
+        <Box className="flex items-center justify-between">
+          <div className="flex flex-col">
+            <Typography variant="subtitle1">Available model files</Typography>
+            <Typography variant="body2" color="textSecondary">
+              Only unused .glb files appear here
+            </Typography>
+          </div>
+          <Button
+            size="small"
+            onClick={loadModelFiles}
+            disabled={isFetchingFiles}
+          >
+            {isFetchingFiles ? 'Refreshing...' : 'Refresh'}
           </Button>
         </Box>
-        <Box sx={{ display: "flex", flexDirection: "column", gap: 1, mt: 1 }}>
-          {modelFiles.map((file) => (
+        <Box className="mt-3 grid gap-2">
+          {availableModelFiles.map((file) => (
             <div
               key={file}
-              className="flex items-center justify-between rounded border border-gray-200 bg-white px-3 py-2"
+              className="flex items-center justify-between rounded-lg border border-gray-200 bg-white px-3 py-2 shadow-sm"
             >
-              <button
-                className="text-sm text-primary underline"
-                onClick={() => setModelFilePath(file.replace(/\.glb$/i, ""))}
-              >
-                {file}
-              </button>
               <div className="flex items-center gap-2">
-                <button
-                  className="text-xs text-gray-700 underline"
-                  onClick={() => setModelFilePath(file.replace(/\.glb$/i, ""))}
-                >
-                  Use
-                </button>
+                <span className="h-2 w-2 rounded-full bg-emerald-500" />
+                <span className="text-sm font-medium text-gray-900">
+                  {file}
+                </span>
               </div>
+              <button
+                className="text-xs font-semibold text-primary underline"
+                onClick={() => setModelFilePath(file.replace(/\.glb$/i, ''))}
+              >
+                Use
+              </button>
             </div>
           ))}
-          {modelFiles.length === 0 && (
-            <Typography variant="body2" color="textSecondary">
-              No .glb files found in /public/models
-            </Typography>
+          {availableModelFiles.length === 0 && (
+            <div className="rounded-lg border border-dashed border-gray-300 bg-gray-50 px-4 py-3 text-sm text-gray-600">
+              No available files. Upload a new .glb or delete an entry to free
+              one.
+            </div>
           )}
         </Box>
       </Box>
 
       <Box sx={{ mt: 2, mb: 3 }}>
-        <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <Typography variant="subtitle1">Existing 3D entries</Typography>
-          <Button size="small" onClick={loadEntries3D} disabled={isFetchingEntries}>
-            Refresh
+        <Box className="flex items-center justify-between">
+          <div className="flex flex-col">
+            <Typography variant="subtitle1">Existing 3D entries</Typography>
+            <Typography variant="body2" color="textSecondary">
+              Models currently in use (removing frees the file)
+            </Typography>
+          </div>
+          <Button
+            size="small"
+            onClick={loadEntries3D}
+            disabled={isFetchingEntries}
+          >
+            {isFetchingEntries ? 'Refreshing...' : 'Refresh'}
           </Button>
         </Box>
-        <Box sx={{ display: "flex", flexDirection: "column", gap: 1, mt: 1 }}>
+        <Box className="mt-3 grid gap-2">
           {entries3D.map((entry) => (
             <div
               key={entry.id}
-              className="flex items-center justify-between rounded border border-gray-200 bg-white px-3 py-2"
+              className="flex items-center justify-between rounded-lg border border-gray-200 bg-white px-3 py-2 shadow-sm"
             >
               <div className="flex flex-col text-left">
-                <span className="text-sm font-medium text-gray-900">
+                <span className="text-sm font-semibold text-gray-900">
                   {entry.model_file_path}.glb
                 </span>
                 <span className="text-xs text-gray-600">
                   Product #{entry.product_id}
                 </span>
               </div>
-              <div className="flex items-center gap-2">
-                <button
-                  className="text-xs text-blue-600 underline"
-                  onClick={() => {
-                    setProductId(entry.product_id.toString());
-                    setModelFilePath(entry.model_file_path);
-                    setPosition(entry.position ?? { x: 0, y: 0, z: 0 });
-                    setScale(entry.scale ?? { x: 1, y: 1, z: 1 });
-                    setRotation(entry.rotation ?? { x: 0, y: 0, z: 0 });
-                    setMessage("Loaded entry; adjust and resave if needed.");
-                  }}
-                >
-                  Use
-                </button>
-                <button
-                  className="text-xs text-red-600"
-                  onClick={async () => {
-                    try {
-                      await delete3DProduct(entry.id);
-                      loadEntries3D();
-                      setMessage("Deleted 3D entry (file kept).");
-                    } catch (err) {
-                      setMessage("Failed to delete entry.");
-                    }
-                  }}
-                >
-                  ✕
-                </button>
-              </div>
+              <button
+                className="text-xs font-semibold text-red-600"
+                onClick={async () => {
+                  try {
+                    await delete3DProduct(entry.id);
+                    loadEntries3D();
+                    setMessage('Deleted 3D entry (file kept).');
+                  } catch (err) {
+                    setMessage('Failed to delete entry.');
+                  }
+                }}
+              >
+                Remove
+              </button>
             </div>
           ))}
           {entries3D.length === 0 && (
-            <Typography variant="body2" color="textSecondary">
-              No 3D entries found.
-            </Typography>
+            <div className="rounded-lg border border-dashed border-gray-300 bg-gray-50 px-4 py-3 text-sm text-gray-600">
+              No 3D entries yet. Add one above to start.
+            </div>
           )}
         </Box>
       </Box>
 
       {/* Product ID */}
-      <Box sx={{ display: "flex", gap: 1, alignItems: "center", mb: 1 }}>
+      <Box sx={{ display: 'flex', gap: 1, alignItems: 'center', mb: 1 }}>
         <Typography variant="subtitle2">Select Product</Typography>
-        <Button size="small" onClick={loadProducts} disabled={isFetchingProducts}>
+        <Button
+          size="small"
+          onClick={loadProducts}
+          disabled={isFetchingProducts}
+        >
           Refresh
         </Button>
       </Box>
@@ -307,10 +326,10 @@ const Add3DProduct = ({ onCreated }: Add3DProductProps) => {
       >
         <MenuItem value="">
           {isFetchingProducts
-            ? "Loading products..."
+            ? 'Loading products...'
             : sortedProducts.length === 0
-            ? "No products found"
-            : "Select product"}
+            ? 'No products found'
+            : 'Select product'}
         </MenuItem>
         {sortedProducts.map((product) => (
           <MenuItem key={product.id} value={product.id.toString()}>
@@ -325,7 +344,7 @@ const Add3DProduct = ({ onCreated }: Add3DProductProps) => {
         onChange={(e) => setProductId(e.target.value)}
         margin="normal"
         placeholder="e.g. 1"
-        inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
+        inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
       />
 
       {/* Model File */}
@@ -343,7 +362,9 @@ const Add3DProduct = ({ onCreated }: Add3DProductProps) => {
             accept=".glb"
             hidden
             onChange={(event) =>
-              handleFileChange(event.target.files ? event.target.files[0] : null)
+              handleFileChange(
+                event.target.files ? event.target.files[0] : null
+              )
             }
           />
         </Button>
@@ -366,7 +387,7 @@ const Add3DProduct = ({ onCreated }: Add3DProductProps) => {
       />
 
       {/* Position */}
-      <Box sx={{ display: "flex", gap: 2, mt: 2 }}>
+      <Box sx={{ display: 'flex', gap: 2, mt: 2 }}>
         <TextField
           fullWidth
           label="Position X"
@@ -400,7 +421,7 @@ const Add3DProduct = ({ onCreated }: Add3DProductProps) => {
       </Box>
 
       {/* Scale */}
-      <Box sx={{ display: "flex", gap: 2, mt: 2 }}>
+      <Box sx={{ display: 'flex', gap: 2, mt: 2 }}>
         <TextField
           fullWidth
           label="Scale X"
@@ -434,7 +455,7 @@ const Add3DProduct = ({ onCreated }: Add3DProductProps) => {
       </Box>
 
       {/* Rotation */}
-      <Box sx={{ display: "flex", gap: 2, mt: 2 }}>
+      <Box sx={{ display: 'flex', gap: 2, mt: 2 }}>
         <TextField
           fullWidth
           label="Rotation X"
@@ -476,18 +497,21 @@ const Add3DProduct = ({ onCreated }: Add3DProductProps) => {
         disabled={isLoading || isUploading}
         sx={{ mt: 3 }}
       >
-        {isLoading || isUploading ? <CircularProgress size={24} /> : "Add 3D Product"}
+        {isLoading || isUploading ? (
+          <CircularProgress size={24} />
+        ) : (
+          'Add 3D Product'
+        )}
       </Button>
 
       {message && (
         <Typography
-          color={message.includes("Error") ? "error" : "success"}
+          color={message.includes('Error') ? 'error' : 'success'}
           sx={{ mt: 2 }}
         >
           {message}
         </Typography>
       )}
-
     </Box>
   );
 };

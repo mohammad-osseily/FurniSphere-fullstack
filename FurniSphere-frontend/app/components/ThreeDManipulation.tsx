@@ -1,16 +1,16 @@
-"use client";
+'use client';
 
-import React, { useRef, useEffect, useState } from "react";
-import * as THREE from "three";
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-import { Box, Button, Slider, Typography } from "@mui/material";
+import React, { useRef, useEffect, useState } from 'react';
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import { Box, Button, Slider, Typography } from '@mui/material';
 import {
   fetchAll3DProducts,
   update3DProductPosition,
   delete3DProduct,
-} from "../services/product3dServices";
-import { useRouter } from "next/navigation";
+} from '../services/product3dServices';
+import { useRouter } from 'next/navigation';
 
 type ModelObject = {
   id: number;
@@ -24,21 +24,29 @@ type ThreeDManipulationProps = {
   refreshKey?: number;
 };
 
-export default function ThreeDManipulation({ refreshKey = 0 }: ThreeDManipulationProps) {
+export default function ThreeDManipulation({
+  refreshKey = 0,
+}: ThreeDManipulationProps) {
   const mountRef = useRef<HTMLDivElement>(null);
   const [modelObjects, setModelObjects] = useState<ModelObject[]>([]);
   const [selectedObject, setSelectedObject] = useState<string | null>(null);
-  const [tempPosition, setTempPosition] = useState<{ x: number; y: number; z: number }>({ x: 0, y: 0, z: 0 });
+  const [tempPosition, setTempPosition] = useState<{
+    x: number;
+    y: number;
+    z: number;
+  }>({ x: 0, y: 0, z: 0 });
   const [scene, setScene] = useState<THREE.Scene | null>(null);
   const [camera, setCamera] = useState<THREE.PerspectiveCamera | null>(null);
   const [renderer, setRenderer] = useState<THREE.WebGLRenderer | null>(null);
   const [controls, setControls] = useState<OrbitControls | null>(null);
+  const [isUpdating, setIsUpdating] = useState(false);
+  const [isLoadingModels, setIsLoadingModels] = useState(false);
 
   const router = useRouter();
 
   const initializeScene = () => {
     const newScene = new THREE.Scene();
-    newScene.background = new THREE.Color("white");
+    newScene.background = new THREE.Color('white');
 
     const newCamera = new THREE.PerspectiveCamera(
       75,
@@ -51,7 +59,7 @@ export default function ThreeDManipulation({ refreshKey = 0 }: ThreeDManipulatio
     const newRenderer = new THREE.WebGLRenderer({ antialias: true });
     newRenderer.setSize(window.innerWidth * 0.7, window.innerHeight);
     if (mountRef.current) {
-      mountRef.current.innerHTML = "";
+      mountRef.current.innerHTML = '';
       mountRef.current.appendChild(newRenderer.domElement);
     }
 
@@ -62,7 +70,7 @@ export default function ThreeDManipulation({ refreshKey = 0 }: ThreeDManipulatio
 
     const floorGeometry = new THREE.PlaneGeometry(20, 20);
     const floorMaterial = new THREE.MeshBasicMaterial({
-      color: "gray",
+      color: 'gray',
       side: THREE.DoubleSide,
     });
     const floor = new THREE.Mesh(floorGeometry, floorMaterial);
@@ -93,6 +101,12 @@ export default function ThreeDManipulation({ refreshKey = 0 }: ThreeDManipulatio
 
   const loadModels = async (newScene: THREE.Scene) => {
     try {
+      if (isLoadingModels) return;
+      setIsLoadingModels(true);
+      // Remove previously added model meshes before reloading.
+      modelObjects.forEach(({ model }) => newScene.remove(model));
+      setModelObjects([]);
+
       const products3D = await fetchAll3DProducts();
       const newModelObjects: ModelObject[] = [];
 
@@ -112,7 +126,9 @@ export default function ThreeDManipulation({ refreshKey = 0 }: ThreeDManipulatio
 
       setModelObjects(newModelObjects);
     } catch (error) {
-      console.error("Error fetching 3D models:", error);
+      console.error('Error fetching 3D models:', error);
+    } finally {
+      setIsLoadingModels(false);
     }
   };
 
@@ -160,12 +176,12 @@ export default function ThreeDManipulation({ refreshKey = 0 }: ThreeDManipulatio
       newRenderer.setSize(window.innerWidth * 0.7, window.innerHeight);
     };
 
-    window.addEventListener("resize", handleResize);
+    window.addEventListener('resize', handleResize);
 
     loadModels(newScene);
 
     return () => {
-      window.removeEventListener("resize", handleResize);
+      window.removeEventListener('resize', handleResize);
       newScene.clear();
     };
   }, []);
@@ -195,7 +211,7 @@ export default function ThreeDManipulation({ refreshKey = 0 }: ThreeDManipulatio
       clearModels(scene);
       await loadModels(scene);
     } catch (error) {
-      console.error("Error deleting 3D model:", error);
+      console.error('Error deleting 3D model:', error);
     }
   };
 
@@ -211,13 +227,14 @@ export default function ThreeDManipulation({ refreshKey = 0 }: ThreeDManipulatio
     }
   };
 
-  const handleTempPositionChange = (axis: "x" | "y" | "z", value: number) => {
-    if (typeof value === "number") {
+  const handleTempPositionChange = (axis: 'x' | 'y' | 'z', value: number) => {
+    if (typeof value === 'number') {
       setTempPosition((prev) => ({ ...prev, [axis]: value }));
     }
   };
 
   const handleSubmit = async () => {
+    if (isUpdating) return;
     const object = modelObjects.find((obj) => obj.name === selectedObject);
     if (object && scene) {
       object.model.position.set(tempPosition.x, tempPosition.z, tempPosition.y);
@@ -230,11 +247,12 @@ export default function ThreeDManipulation({ refreshKey = 0 }: ThreeDManipulatio
       };
 
       try {
+        setIsUpdating(true);
         await update3DProductPosition(object.id, position);
-        console.log("Position updated successfully");
-        router.refresh();
       } catch (error) {
-        console.error("Error updating position:", error);
+        console.error('Error updating position:', error);
+      } finally {
+        setIsUpdating(false);
       }
 
       setModelObjects([...modelObjects]);
@@ -244,35 +262,43 @@ export default function ThreeDManipulation({ refreshKey = 0 }: ThreeDManipulatio
   return (
     <div className="flex h-screen">
       <div ref={mountRef} className="w-[70%] h-full" />
-      <div className="w-[30%] p-4 bg-gray-100 overflow-y-auto">
-        <Typography variant="h6" gutterBottom>
+      <div className="w-[30%] p-5 bg-gray-50 overflow-y-auto border-l border-gray-200">
+        <Typography variant="h6" gutterBottom className="text-gray-900">
           Object Manipulation
         </Typography>
-        <Box sx={{ display: "flex", flexDirection: "column", gap: 1.5, mb: 2 }}>
+        <Typography variant="body2" gutterBottom className="text-gray-600">
+          Pick a model, adjust its position, then apply the change.
+        </Typography>
+        <Box className="flex flex-col gap-2 mb-3">
           {modelObjects.map((obj) => (
             <div
               key={obj.id}
-              className="flex items-center justify-between rounded border border-gray-200 bg-white px-3 py-2"
+              className="flex items-center justify-between rounded-lg border border-gray-200 bg-white px-3 py-2 shadow-sm"
             >
               <button
-                className={`text-sm font-medium ${selectedObject === obj.name ? "text-primary" : "text-gray-800"}`}
+                className={`text-sm font-medium ${
+                  selectedObject === obj.name ? 'text-primary' : 'text-gray-800'
+                }`}
                 onClick={() => handleObjectSelect(obj.name)}
               >
                 {obj.name}
               </button>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-3">
+                <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-[11px] font-semibold text-emerald-700">
+                  #{obj.id}
+                </span>
                 <button
-                  className="text-xs text-blue-600 underline"
+                  className="text-xs font-semibold text-blue-600 underline"
                   onClick={() => handleObjectSelect(obj.name)}
                 >
                   Edit
                 </button>
                 <button
-                  className="text-xs text-red-600"
+                  className="text-xs font-semibold text-red-600"
                   aria-label={`Delete ${obj.name}`}
                   onClick={() => handleDeleteObject(obj.id, obj.name)}
                 >
-                  ✕
+                  Remove
                 </button>
               </div>
             </div>
@@ -292,12 +318,12 @@ export default function ThreeDManipulation({ refreshKey = 0 }: ThreeDManipulatio
               <Typography gutterBottom>
                 X Position: {tempPosition.x.toFixed(2)}
               </Typography>
-              <Box sx={{ display: "flex", alignItems: "center" }}>
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <Slider
                   className="text-primary"
                   value={tempPosition.x}
                   onChange={(_, value) =>
-                    handleTempPositionChange("x", value as number)
+                    handleTempPositionChange('x', value as number)
                   }
                   min={-8}
                   max={8}
@@ -306,7 +332,7 @@ export default function ThreeDManipulation({ refreshKey = 0 }: ThreeDManipulatio
                 />
                 <Typography
                   variant="body2"
-                  sx={{ minWidth: "40px", textAlign: "right" }}
+                  sx={{ minWidth: '40px', textAlign: 'right' }}
                 >
                   {tempPosition.x.toFixed(2)}
                 </Typography>
@@ -316,12 +342,12 @@ export default function ThreeDManipulation({ refreshKey = 0 }: ThreeDManipulatio
               <Typography gutterBottom>
                 Y Position: {tempPosition.y.toFixed(2)}
               </Typography>
-              <Box sx={{ display: "flex", alignItems: "center" }}>
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <Slider
                   className="text-primary"
                   value={tempPosition.y}
                   onChange={(_, value) =>
-                    handleTempPositionChange("y", value as number)
+                    handleTempPositionChange('y', value as number)
                   }
                   min={-8}
                   max={8}
@@ -330,7 +356,7 @@ export default function ThreeDManipulation({ refreshKey = 0 }: ThreeDManipulatio
                 />
                 <Typography
                   variant="body2"
-                  sx={{ minWidth: "40px", textAlign: "right" }}
+                  sx={{ minWidth: '40px', textAlign: 'right' }}
                 >
                   {tempPosition.y.toFixed(2)}
                 </Typography>
@@ -340,12 +366,12 @@ export default function ThreeDManipulation({ refreshKey = 0 }: ThreeDManipulatio
               <Typography gutterBottom>
                 Z Position: {tempPosition.z.toFixed(2)}
               </Typography>
-              <Box sx={{ display: "flex", alignItems: "center" }}>
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <Slider
                   className="text-primary"
                   value={tempPosition.z}
                   onChange={(_, value) =>
-                    handleTempPositionChange("z", value as number)
+                    handleTempPositionChange('z', value as number)
                   }
                   min={0}
                   max={10}
@@ -354,7 +380,7 @@ export default function ThreeDManipulation({ refreshKey = 0 }: ThreeDManipulatio
                 />
                 <Typography
                   variant="body2"
-                  sx={{ minWidth: "40px", textAlign: "right" }}
+                  sx={{ minWidth: '40px', textAlign: 'right' }}
                 >
                   {tempPosition.z.toFixed(2)}
                 </Typography>
@@ -366,8 +392,9 @@ export default function ThreeDManipulation({ refreshKey = 0 }: ThreeDManipulatio
               color="primary"
               onClick={handleSubmit}
               fullWidth
+              disabled={isUpdating}
             >
-              Apply Changes
+              {isUpdating ? 'Updating...' : 'Apply Changes'}
             </Button>
           </Box>
         )}

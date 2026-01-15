@@ -1,11 +1,11 @@
 // app/services/productService.ts
 
-import axios from "axios";
-import { getTokenFromLocalStorage } from "./authServices";
-import { Category, Product3D } from "@/types";
-import { Product } from "@/types/product";
+import axios from 'axios';
+import { getTokenFromLocalStorage } from './authServices';
+import { Category, Product3D } from '@/types';
+import { Product } from '@/types/product';
 
-const API_URL = "http://127.0.0.1:8000/api"; // Adjust to your backend URL
+const API_URL = 'http://127.0.0.1:8000/api'; // Adjust to your backend URL
 
 /**
  * Fetch all categories with their associated products.
@@ -16,7 +16,7 @@ export const fetchCategoriesWithProducts = async (): Promise<Category[]> => {
     const response = await axios.get(`${API_URL}/categories-with-products`);
     return response.data.categories;
   } catch (error) {
-    console.error("Error fetching categories with products:", error);
+    console.error('Error fetching categories with products:', error);
     throw error;
   }
 };
@@ -25,7 +25,7 @@ export const fetchProductsWith3DModels = async (): Promise<Product3D[]> => {
     const response = await axios.get(`${API_URL}/products/3d`);
     return response.data.products;
   } catch (error) {
-    console.error("Failed to fetch 3D products:", error);
+    console.error('Failed to fetch 3D products:', error);
     throw error;
   }
 };
@@ -34,13 +34,10 @@ export const fetchAllProducts = async (): Promise<Product[]> => {
   try {
     const response = await axios.get(`${API_URL}/products`);
     const payload =
-      response.data?.data ??
-      response.data?.products ??
-      response.data ??
-      [];
+      response.data?.data ?? response.data?.products ?? response.data ?? [];
     return Array.isArray(payload) ? (payload as Product[]) : [];
   } catch (error) {
-    console.error("Failed to fetch products list:", error);
+    console.error('Failed to fetch products list:', error);
     throw error;
   }
 };
