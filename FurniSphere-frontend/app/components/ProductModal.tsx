@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import { X, ShoppingCart, ChevronLeft, ChevronRight } from 'lucide-react';
+import Image from 'next/image';
 import { addToCart } from '../services/orderServices';
 import { toast } from 'react-hot-toast';
 import { Product } from '@/types';
@@ -137,18 +138,20 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, isOpen, onClose })
             {!imageLoaded && !imageError && (
               <div className="absolute inset-0 bg-base-300 animate-pulse rounded-lg" />
             )}
-            <div className="relative w-full aspect-square max-h-[500px]">
-            <img
-                src={imageUrl}
+          <div className="relative w-full aspect-square max-h-[500px]">
+            <Image
+              src={imageUrl}
               alt={product.name}
-                className={`w-full h-full object-cover rounded-lg transition-opacity duration-300 ${
-                  imageLoaded ? 'opacity-100' : 'opacity-0'
-                }`}
-                loading="eager"
-                decoding="async"
-                onError={() => setImageError(true)}
-                onLoad={() => setImageLoaded(true)}
-              />
+              fill
+              sizes="(max-width: 1024px) 100vw, 50vw"
+              className={`rounded-lg object-cover transition-opacity duration-300 ${
+                imageLoaded ? 'opacity-100' : 'opacity-0'
+              }`}
+              priority
+              unoptimized
+              onError={() => setImageError(true)}
+              onLoadingComplete={() => setImageLoaded(true)}
+            />
 
               {/* Image Navigation Arrows */}
               {imageCount > 1 && (

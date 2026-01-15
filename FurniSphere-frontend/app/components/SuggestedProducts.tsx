@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 const products = [
   { id: 1, name: "Classy Sofa", price: "$499", image: "/images/sofa1.png" },
   { id: 2, name: "Elegant Chair", price: "$199", image: "/images/chair1.png" },
@@ -15,11 +17,16 @@ const SuggestedProducts = () => {
               key={product.id}
               className="bg-white p-4 rounded shadow-lg text-center"
             >
-              <img
-                src={product.image}
-                alt={product.name}
-                className="w-full h-48 object-cover mb-4"
-              />
+              <div className="relative w-full h-48 mb-4">
+                <Image
+                  src={product.image}
+                  alt={product.name}
+                  fill
+                  className="object-cover rounded"
+                  sizes="(max-width: 768px) 100vw, 25vw"
+                  unoptimized
+                />
+              </div>
               <h3 className="text-xl font-semibold">{product.name}</h3>
               <p className="text-gray-700">{product.price}</p>
             </div>

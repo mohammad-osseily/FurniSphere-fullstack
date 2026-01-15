@@ -184,6 +184,7 @@ export default function ThreeDManipulation({
       window.removeEventListener('resize', handleResize);
       newScene.clear();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -192,6 +193,7 @@ export default function ThreeDManipulation({
     }
     clearModels(scene);
     loadModels(scene);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [refreshKey, scene]);
 
   const handleDeleteObject = async (id: number, name: string) => {

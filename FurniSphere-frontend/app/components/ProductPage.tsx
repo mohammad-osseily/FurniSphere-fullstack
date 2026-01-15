@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from "react";
+import Image from "next/image";
 import ProductModal from "./ProductModal";
 import { Category, Product } from "@/types";
 
@@ -34,11 +35,16 @@ const ProductPage: React.FC<ProductPageProps> = ({ categories }) => {
                 className="border rounded-lg p-4 cursor-pointer hover:shadow-lg"
                 onClick={() => handleAddToCart(product)}
               >
-                <img
-                  src={product.image}
-                  alt={product.name}
-                  className="w-full h-auto mb-4"
-                />
+                <div className="relative w-full h-48 mb-4">
+                  <Image
+                    src={product.image}
+                    alt={product.name}
+                    fill
+                    className="object-cover rounded-md"
+                    sizes="(max-width: 768px) 100vw, 25vw"
+                    unoptimized
+                  />
+                </div>
                 <h3 className="text-lg font-semibold">{product.name}</h3>
                 <p className="text-primary font-bold">{product.price} $</p>
               </div>
